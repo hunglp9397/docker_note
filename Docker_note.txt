@@ -1,0 +1,72 @@
+
+
+* Có 2 cách lưu trữ dữ liệu từ container ra ngoài máy host:
+
+1.Docker volumns : Là folder ở máy host mà được mounted và mapped vào trong container
+				 
+				 Khi thêm volumns vào trong container. Volumns sẽ không bị xóa đi khi container bị xóa -> Cho phép persist data mặc dù container đã bị shutdown
+				 
+
+- Start container cùng với đường dẫn volumes xác định(Ở đây tên volumes là "feedback") :
+
+	docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback feedback-node:volumes
+
+- Kiểm tra volumes vừa tạo ở máy host: 
+	doker volume ls
+
+
+
+2. Bind mounted : Về cơ bản khi run container. Giả sử cần sửa file ở máy host, thì app được build ở máy host không ăn theo code
+
+				Mỗi lần sửa code cần phải build lại images, sau đó run lại container -> Việc này là rất cồng kềnh
+				
+				
+				
+	Bind mounted tương  tự như docker nhưng có một điểm khác : 
+		
+		Volume được quản lý bởi docker, Ta không thể biết được đường dẫn folder chứa volume ở máy host
+		Với bind mounted ta biết được điều đó, vì do chính ta xác định đường dẫn đó
+		
+		Ánh xạ volume trong container sang volume ở máy host : 
+			
+			docker run -d -p 3000:80 --rm --name feedback-app -v feedback:/app/feedback -v D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app  feedback-node:volumes
+		
+		
+	Summary : 
+		
+		docker run -v /app/data ... -> anonymous volume (Ở đây data chính là đường dẫn volumne folder)
+		
+		docker run -v some-name:/app/data ...  -> named volume (Ở đây data chính làđường dẫn volumne folder, some-name chính là tên của volume)
+		
+		docker run  -v /path/to/code:/app/code ... -> Bind mounted
+		
+		
+		
+		VD :Create images:
+		
+		docker run -d --rm -p 3000:80  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
+		
+		
+		
+3. Dockerignore
+
+	không nên copy tất cả các file từ máy host vào container.
+	.Dockerignore xác định file hoặc folder nào không nên coy bởi lệnh COPY trong Dockerfile
+	
+	Ví dụ : node_modules không nên copy vào container. Nên để node_modules vào .dockerignore
+	
+	
+	
+4. Environ variable
+-
+	Trong docker file có thể set environment bằng lệnh :' "ENV" 
+	ví dụ : ENV PORT 80
+
+- Ngoài ra có thể set env ngay trong lệnh run container : 
+
+	ocker run -d --rm -p 3000:80 --env PORT=80  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
+	
+
+
+		
+		
