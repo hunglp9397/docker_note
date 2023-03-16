@@ -57,7 +57,7 @@
 	
 	
 	
-4. Environ variable
+4. Environment variable
 -
 	Trong docker file có thể set environment bằng lệnh :' "ENV" 
 	ví dụ : ENV PORT 80
@@ -74,6 +74,7 @@
 		docker run -d --rm -p 3000:80 --env-file ./.env  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
 
 		
+<<<<<<< HEAD
 5. Argument variable
 			
 -  Sử dụng ARG:
@@ -96,3 +97,6 @@ Phần 2 : Docker network :
 
 	docker run  -d --name mongodb mongo
 	
+=======
+		
+>>>>>>> 48592dc5318f713161f34341f66867d159bb0b98
