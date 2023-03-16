@@ -64,9 +64,35 @@
 
 - Ngoài ra có thể set env ngay trong lệnh run container : 
 
-	ocker run -d --rm -p 3000:80 --env PORT=80  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
+	docker run -d --rm -p 3000:80 --env PORT=80  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
 	
 
+- Ngoài ra cũng có thể tạo một file .env sau đó set PORT = 80 trong file đó
+	
+ Khi đó, run docker thêm lệnh : "--env-file ./.env"
+	
+		docker run -d --rm -p 3000:80 --env-file ./.env  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
 
 		
-		
+5. Argument variable
+			
+-  Sử dụng ARG:
+
+	Trong docker file có thể set argument bằng lệnh "ARG"
+	
+	Ví dụ : ARG DEFAULT_PORT = 80
+	
+	        EXPOSE $DEFAULT_PORT
+
+
+
+Phần 2 : Docker network :
+
+- "host.docker.interal" là host local bên trong container docker 	
+
+- Pull docker DB
+
+- Run docker container từ mongo Images,
+
+	docker run  -d --name mongodb mongo
+	

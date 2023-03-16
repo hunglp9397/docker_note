@@ -4,6 +4,9 @@ WORKDIR /app
 
 COPY package.json .
 
+
+ARG DEFAULT_PORT=80
+
 RUN npm install
  
 COPY . .
