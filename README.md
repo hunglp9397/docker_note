@@ -1,4 +1,4 @@
-**Phần 1**
+## **Phần 1: Các lệnh cơ bản**
 
 Có 2 cách lưu trữ dữ liệu từ container ra ngoài máy host:
 
@@ -108,3 +108,30 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
   Cần sửa lại đường dẫn url connect DB như sau : (mongodb là tên của container mongodb vừa run ở trên)
  ![img_2.png](img_2.png)
 - Sau đó build lại images, run lại app container( Lưu ý ở đây cần thêm tham số --network ): `docker run --name favorites --network favorites-net -d --rm -p 3000:3000 favorites-node`
+
+
+
+
+---------------------------------------------------------------------------------------------------------------
+
+# **Phần 2 : Build multi container**
+[Source code :](/multi-01-starting-setup) 
+- B1 : Run Mongodb container : 
+    `docker run --name mongodb --rm -d -p 27017:27017 mongo`
+
+- B2 : Dockerize backend:
+    + Tạo Dockerfile : 
+    ![img_3.png](img_3.png)
+    + Trong file app.js, Update url connect mongo : 
+        ![img_4.png](img_4.png)
+    + Build image : `docker build -t goals-node .`
+    + Run container từ images vừa build : `docker run --name goals-backend --rm -d -p 80:80 goals-node`
+  
+- B2 : Dockerize Frontend:
+    + Tạo Docker file
+    ![img_5.png](img_5.png)
+    + Build image : `docker build -t goals-react .`
+    + Run container từ images vừa build : `docker run --name goals-frontend --rm -d -p 3000:3000 goals-react`
+ => Kết quả : 
+    ![img_6.png](img_6.png)
+    
