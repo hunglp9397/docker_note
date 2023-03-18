@@ -134,4 +134,31 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
     + Run container từ images vừa build : `docker run --name goals-frontend --rm -d -p 3000:3000 goals-react`
  => Kết quả : 
     ![img_6.png](img_6.png)
+ * Note : Nhận thấy 3 cách run container trên đều cần export port
+ 
+  => Bình thường cũng k ai làm ntn. Best practive là run 3 container dưới 1 network, khi đó thì sẽ k cần export
+ 
+[Best practive]:
+ - B1 : 
+   + Tạo network  `docker network create goals-net`
+   + Kiểm tra : `docker network ls`
+     ![img_7.png](img_7.png)
+    
+  -B2 : Run mongo container trong network vừa tạo  `docker run --name mongodb --rm -d --network goals-net mongo`
+  -B3 : Run backend trong network vừa tạo :
+    Tuy nhiên trước đó cần sửa lại file app.js, sửa lại url tới db : 
+    ![img_8.png](img_8.png)
+    Ở đây mongodb chính là tên container vừa run ở B2. Ở đây ta vẫn cần phải export cổng 80. Vẫn cần network vì node api call tới DB
+    Build lại images rồi run backend :    `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
+
+  -B4 : Run frontend trong network vừa tạo :
+   Tuy nhiên cần sửa lại file App.js , sửa lại url tới api mà FE gọi tới BE là localhost. Sau đó vẫn cần phải export cổng 3000
+    ![img_9.png](img_9.png)
+    Build lại images rồi run frontend container `docker run --name goals-frontend --rm -d --network goals-net -p 3000:3000 goals-react`
+    
+  =============
+   Giải thích lý do vì sao vẫn cần phải export port : Vì tại file app.js trong backend. Code ko chạy trong container, mà nó chạy trên web browser, docker ko giúp run code trên web browser 
+   => Kết quả : 
+   ![img_10.png](img_10.png)
+    
     
