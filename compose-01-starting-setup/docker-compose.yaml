@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  # backend:
+  # frontend:
+  mongodb:
+    image: "mongo"
+    volumes:
+      - data:/data/db
+    # environment:
+      # - MONGO_INITDB_ROOT_USERNAME=lucas
+      # - MONGO_INITDB_ROOT_PASSWORD=secret
+    env_file:
+      - ./env/mongo.env
+volumes:
+  data:

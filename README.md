@@ -145,12 +145,23 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
      ![img_7.png](img_7.png)
     
   -B2 : Run mongo container trong network vừa tạo  `docker run --name mongodb --rm -d --network goals-net mongo`
+   + Lưu ý 1: Khi stop container docker thì dữ liệu mà submit form sẽ mất. Do đó cần phải thêm volume khi run mongoDB container.
+     Do đó câu lệnh run container mongodb đúng là như sau : 
+    `docker run --name mongodb -v data:/data/db --rm -d --network goals-net mongo`
+
+   + Lưu ý 2 : Cần phải authen cho mongo container = username password như sau :
+  `docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INIT_DB_ROOT_USERNAME=hunglp -e MONGO_INITDB_ROOT_PASSWORD=secret  mongo
+`
+
   -B3 : Run backend trong network vừa tạo :
     Tuy nhiên trước đó cần sửa lại file app.js, sửa lại url tới db : 
     ![img_8.png](img_8.png)
     Ở đây mongodb chính là tên container vừa run ở B2. Ở đây ta vẫn cần phải export cổng 80. Vẫn cần network vì node api call tới DB
     Build lại images rồi run backend :    `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
-
+    + Lưu ý: Do mongodb container đã set authen username/password (lưu ý 2 bước 2) Nên lại phải sửa lại app.js như sau : 
+    ![img_12.png](img_12.png)
+    Build lại images rồi run backend : `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
+    
   -B4 : Run frontend trong network vừa tạo :
    Tuy nhiên cần sửa lại file App.js , sửa lại url tới api mà FE gọi tới BE là localhost. Sau đó vẫn cần phải export cổng 3000
     ![img_9.png](img_9.png)
@@ -160,5 +171,20 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
    Giải thích lý do vì sao vẫn cần phải export port : Vì tại file app.js trong backend. Code ko chạy trong container, mà nó chạy trên web browser, docker ko giúp run code trên web browser 
    => Kết quả : 
    ![img_10.png](img_10.png)
+
+# **Phần 3 : Build multi container bằng DockerCompose**
+[Source code :](/compose-01-starting-setup) 
+1. Những lưu ý khi dùng dockercompose để build thay cho cách 2 : 
     
-    
+- Docker run container với lệnh  ` -d (detach mode)`
+- Docker run container với ` --rm (tự động remove khi stop container)`
+- Tự động tạo network cho tất cả các service trong file dockercompose.yml
+
+
+2. Lệnh để chạy dockercompose ; 
+    docker compose up -d
+
+3. Lệnh để stop all services: (Ở đây sẽ xóa container, xóa network nhưng chưa xóa volume)
+    docker compose down
+ => Để stop all services đồng thời xóa luôn volume dùng lệnh sau : docker compose down -v (tuy nhiên k nên dùng vì sẽ xóa hết data trong volume)
+4. 
