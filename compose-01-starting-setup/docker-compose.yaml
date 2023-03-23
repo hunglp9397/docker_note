@@ -1,15 +1,47 @@
+
 version: "3.8"
 services:
-  # backend:
-  # frontend:
+  backend:
+    build: ./backend
+    image: 'goals-node'
+    ports:
+      - '80:80'
+    volumes:
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    env_file:
+      - ./env/backend.env
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on:
+      - serviceName
+
+
+
   mongodb:
     image: "mongo"
+    container_name: mongodb
     volumes:
       - data:/data/db
+    ports:
+      - "27017:27017"
     # environment:
       # - MONGO_INITDB_ROOT_USERNAME=lucas
       # - MONGO_INITDB_ROOT_PASSWORD=secret
-    env_file:
-      - ./env/mongo.env
+    command: [--auth]
+    restart: always
+    # env_file:
+    #   - ./env/mongo.env
 volumes:
   data:
+  # logs:
