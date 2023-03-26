@@ -196,4 +196,16 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
 docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
 ![img_13.png](img_13.png)
 
-# **Phần 4 : Build multi container khó :D Laravel PHP**
+# **Phần 4 : Build multi container khó :D Laravel PHP Nginx**
+**Sơ đồ cấu trúc :** 
+[Folder thực hành : ](./Practive_Multiple_container_laravel_php_nginx)
+![img_14.png](img_14.png)
+1. Nginx Container :
+    
+     [Source code : laravel-01-added-nginx](./laravel-01-added-nginx)
+     [Nginx config : nginx.conf](./nginx.conf)
+
+    * B1 : 
+    
+3. PHP Container
+4. MySQ Container
