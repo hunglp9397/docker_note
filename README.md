@@ -182,9 +182,18 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
 
 
 2. Lệnh để chạy dockercompose ; 
-    docker compose up -d
+    `docker compose up -d`
 
 3. Lệnh để stop all services: (Ở đây sẽ xóa container, xóa network nhưng chưa xóa volume)
-    docker compose down
- => Để stop all services đồng thời xóa luôn volume dùng lệnh sau : docker compose down -v (tuy nhiên k nên dùng vì sẽ xóa hết data trong volume)
-4. 
+   ` docker compose down`
+ => Để stop all services đồng thời xóa luôn volume dùng lệnh sau :` docker compose down -v` (tuy nhiên k nên dùng vì sẽ xóa hết data trong volume)
+
+4. Lệnh để chỉ chạy 1 service trong khi docker compose khai báo nhiều services :
+    
+    `docker compose run <tên_service>` (Ở đây sẽ k xóa contaienr khi stop container)
+   => Muốn container bị remove khi bị stop thì dùng lệnh --rm  : `docker compose run --rm <tên_service>`
+
+docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
+![img_13.png](img_13.png)
+
+# **Phần 4 : Build multi container khó :D Laravel PHP**
