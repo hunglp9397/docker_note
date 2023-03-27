@@ -216,3 +216,5 @@ docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
     ![img_17.png](img_17.png)
 6. Run 3 container : server, php , mysql
    `docker-compose up -d server php mysql`
+ => Kết quả : localhost:8000
+    ![img_18.png](img_18.png)
