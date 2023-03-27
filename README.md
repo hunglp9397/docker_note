@@ -204,8 +204,15 @@ docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
     
      [Source code : laravel-01-added-nginx](./laravel-01-added-nginx)
      [Nginx config : nginx.conf](./nginx.conf)
-
-    * B1 : 
-    
-3. PHP Container
-4. MySQ Container
+2. PHP Container
+3. MySQL Container
+ => Khai báo 3 services trong dockerfiles như sau : 
+  ![img_16.png](img_16.png)
+4. Khởi tạo Laravel App dựa trên Composer Ultility :
+  `docker-compose run --rm composer create-project --prefer-dist laravel/laravel .`
+ => Source code được khởi tạo trong thư mục src:
+![img_15.png](img_15.png)
+5. Sửa lại url MYSQ trong file src/.env :
+    ![img_17.png](img_17.png)
+6. Run 3 container : server, php , mysql
+   `docker-compose up -d server php mysql`
