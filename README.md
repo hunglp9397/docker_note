@@ -218,3 +218,28 @@ docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
    `docker-compose up -d server php mysql`
  => Kết quả : localhost:8000
     ![img_18.png](img_18.png)
+   (Lưu ý : Dùng lệnh sau để build lại các service khi thay đổi các file dockerfile của từng service) : `docker-compose up -d --build server php mysql`
+
+
+# **Phần 5: Deploy container lên AWS EC2**
+
+1. Một số thông tin AWS EC2 :
+   Amazon Elastic Compute Cloud (Amazon EC2) là một cơ sở hạ tầng điện toán đám mây được cung cấp bởi Amazon Web Services (AWS) giúp cung cấp tài nguyên máy tính ảo hoá theo yêu cầu.
+   Amazon EC2 cung cấp các ứng dụng máy tính ảo hoá có thể mở rộng về khả năng xử lý cùng các thành phần phần cứng ảo như bộ nhớ máy tính (ram), vi xử lý, linh hoạt trong việc lựa chọn các phân vùng lưu trữ dữ liệu ở các nền tảng khác nhau và sự an toàn trong quản lý dịch vụ bởi kiến trúc ảo hoá đám mây mạnh mẽ của AWS.
+   Amazon EC2 sẽ cung cấp một hoặc máy chủ ảo có thể kết hợp với nhau để dễ dàng triển khai ứng dụng nhanh nhất và đảm bảo tính sẵn sàng cao nhất. Thậm chí về mặt thanh toán bạn dễ dàng biết được các mức chi phí cần thanh toán dựa trên thông tin tài nguyên bạn sử dụng.
+
+2. Các bước Deploy : 
+   - Khởi tạo và chạy EC2 Instance, VPC, security group
+   - Cấu hình security group để ánh xạ tất cả các port đến WWW
+   - Kết nối tới instance, cài đặt docker và chạy container
+
+3. Các bước implemnt deploy lên AWS EC2 : 
+[Source code : ](/deployment-01-starting-setup)
+
+- B1 : Build images : 
+    `docker build -t node-dep-example .`
+- B2 : Run container từ images vừa build
+   `docker run -d --rm --name node-dep -p 80:80 node-dep-example`
+   => kết quả : 
+    ![img_19.png](img_19.png)
+- B3
