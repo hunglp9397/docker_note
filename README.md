@@ -243,3 +243,13 @@ docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
    => kết quả : 
     ![img_19.png](img_19.png)
 - B3
+* Lưu ý :
+Vì sao dùng Bind mounts khi run ở develop và dùng COPY ở Production
+
+- Ở môi trường develop:
+    + Container đóng gói môi trường runtime nhưng k cần code
+    + Cho phép cập nhật ngay lập tức mà không cần phải khởi động lại container
+
+- Ở môi trường Production, nên dùng COPY vì : 
+    + Container hoạt động độc lập, ko cần code ở trên máy remote
+    + Đảm bảo rằng tất cả các images chạy mà k cần update thêm cấu hình nào nữa, chỉ việc chạy là xong
