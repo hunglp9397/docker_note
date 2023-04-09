@@ -242,8 +242,8 @@ docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
    `docker run -d --rm --name node-dep -p 80:80 node-dep-example`
    => kết quả : 
     ![img_19.png](img_19.png)
-- B3
-* Lưu ý :
+
+    **Lưu ý 1:**    
 Vì sao dùng Bind mounts khi run ở develop và dùng COPY ở Production
 
 - Ở môi trường develop:
@@ -253,3 +253,59 @@ Vì sao dùng Bind mounts khi run ở develop và dùng COPY ở Production
 - Ở môi trường Production, nên dùng COPY vì : 
     + Container hoạt động độc lập, ko cần code ở trên máy remote
     + Đảm bảo rằng tất cả các images chạy mà k cần update thêm cấu hình nào nữa, chỉ việc chạy là xong
+
+
+
+**Lưu ý 2 :** 
+Có 2 cách deploy : deploy source vs deploy build image
+
+Cách 1 : Deploy source
+- Build image trên máy remote
+- Đẩy source code lên máy, Run docker build, docker run
+- Phức tạp, k cần thiết 
+
+
+Cách 2: Deploy image
+- Build image trước khi deploy (ví dụ build trên máy local)
+- Chạy docker run 
+- Tránh phải làm việc trên máy host
+
+
+B3: Tạo file .dockerignore để loại bỏ các file k cần thiết khi push lên dockerhub
+![img_20.png](img_20.png)
+
+
+B4: Login docker bằng terminal:
+
+Tại terminal với đường dẫn: D:\Workspace\Learning\Devops\deployment-01-starting-setup>
+
+Run lệnh : `docker login`
+![img_21.png](img_21.png)
+
+B5: Lên trang docker hub. Tạo repository với tên : _node-example-1_
+![img_22.png](img_22.png)
+
+B6. Tại terminal, tag images với tên 123497/node-example-1 chính là username+tên_repository vừa tạo ở B5:
+
+    `docker tag docker-dep-example-1 123497/node-example-1`
+
+
+-> Kết quả:
+![img_23.png](img_23.png)
+
+B7: Push lên docker hub:
+
+`docker push 123497/node-example-1`
+    
+=> **Kết quả** 
+![img_24.png](img_24.png)
+
+B8. Run images trên remote machine:
+
+Ví dụ tại remote machine, url terminal là _ec2-user@ip-172-31-45-61_:
+Run lệnh : 
+sudo docker run  -d --rm -p 80:80 123497/node-example-1
+
+
+
+
