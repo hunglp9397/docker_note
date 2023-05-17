@@ -20,9 +20,9 @@ Khi thêm volumns vào trong container. Volumns sẽ không bị xóa đi khi co
 
 Mỗi lần sửa code cần phải build lại images, sau đó run lại container -> Việc này là rất cồng kềnh
 
-- Bind mounted tương  tự như docker nhưng có một điểm khác : 
+- Bind mounted tương  tự như volume nhưng có một điểm khác : 
 		
-Volume được quản lý bởi docker, Ta không thể biết được đường dẫn folder chứa volume ở máy host
+Volume được quản lý bởi docker, Ta không thể biết được đường dẫn folder chứa volume ở máy host.
 Với bind mounted ta biết được điều đó, vì do chính ta xác định đường dẫn đó
 		
 Ánh xạ volume trong container sang volume ở máy host : 
