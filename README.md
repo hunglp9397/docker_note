@@ -308,4 +308,35 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
 
 
+# **Phần 6: KUBERNETES**
+1. Khái niệm :
+   - Là 1 platform deploy, scaling, quản lí các ứng dụng hoạt động dựa trên container
+   - Các ứng dụng cos thể khác nhau về kích thước, lên tới hàng nghìn server
 
+2. Lợi ích chủ yếu:
+   - Điều phối container, k8s đảm bảo tất cả các container chạy trên các server (Physical machine, Virtual Hoạt đônộng)
+   - Theo dõi hoạt động của từng container, Khi container nào đó bị trục trặc, K8s tự động chạy lại container đó
+   
+3. Các thành phần trong K8s cluster
+   - Pod: 
+     + Pod là đơn vị nhỏ nhất trong kubernets
+     + Pod chứa một hoặc nhiều container
+   - Worker Nodes:
+     + Có thể hiểu là virtual machine, host machine, ec2 instance... dùng để chạy container(Run Pod)
+     + Có một hoặc nhiều pod chạy trên một worker nodes
+     + Tương tự, có thể có nhiều worker node chạy trên các port khác nhau
+   - Proxy : 
+     + Thành phần trong Worker Node,để điều khiển, quản lý lưu lượng mạng, Đảm bảo các Pod chạy trên internet
+   - Master Node:
+     + Là một server khác, một máy remote khác điều khiển hoạt động (Tạo và start pods, thay thế nếu pods dừng hoạt động) của các worker node
+     
+![img_28.png](img_28.png)
+
+4. Những việc mà Kubernetes làm và Dev cần làm
+    - Kubernetes làm:
+      + Tạo ra các pods và quản lý pods
+      + Giám sát pods và khởi tạo lại chúng nếu có vấn đề, scale pods
+    - Dev làm:
+      + Tạo cluster và Node instance ( worker node, master node)
+      + Cấu hình API server, kubelet và các kubernetes services khác, hoặc các phần mềm trên nodes
+      + Tạo các cloud resources cần thiết ( Load balancer, File System)
