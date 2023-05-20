@@ -318,13 +318,22 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
    - Theo dõi hoạt động của từng container, Khi container nào đó bị trục trặc, K8s tự động chạy lại container đó
    
 3. Các thành phần trong K8s cluster
+   - Cluster:
+     + 1 tập hợp các máy nodes mà ang chạy container ( worker node) và quản lý các master node
+   - Node: 
+     + Là máy vật lý  hoặc mays ảo lưu trữu một hoặc nhiều Pods và duy trì kết nối với Cluster
    - Pod: 
      + Pod là đơn vị nhỏ nhất trong kubernets
      + Pod chứa một hoặc nhiều container
+     + Pod có thể kết nối với các pod khác thông qua IP
+     + Chứa volumes
+     + Các container bên trong host có thể giao tiếp thông qua localhost
    - Worker Nodes:
      + Có thể hiểu là virtual machine, host machine, ec2 instance... dùng để chạy container(Run Pod)
      + Có một hoặc nhiều pod chạy trên một worker nodes
      + Tương tự, có thể có nhiều worker node chạy trên các port khác nhau
+     + kubelet : Tạo kết nối giữa Worker node và master node
+     + kubeproxy : Quản lý node và kết nối của pod
    - Proxy : 
      + Thành phần trong Worker Node,để điều khiển, quản lý lưu lượng mạng, Đảm bảo các Pod chạy trên internet
    - Master Node:
@@ -340,3 +349,12 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + Tạo cluster và Node instance ( worker node, master node)
       + Cấu hình API server, kubelet và các kubernetes services khác, hoặc các phần mềm trên nodes
       + Tạo các cloud resources cần thiết ( Load balancer, File System)
+5. Cài đặt kubernetes và minikube
+    - Active kubenetes trên docker desktop:
+        ![img_29.png](img_29.png)
+    - Cài đặt minikube (Xem hướng dẫn trên udemy)
+    
+      Kết quả : 
+      ![img_30.png](img_30.png)
+      => ![img_31.png](img_31.png)
+6. 
