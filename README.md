@@ -354,7 +354,23 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
         ![img_29.png](img_29.png)
     - Cài đặt minikube (Xem hướng dẫn trên udemy)
     
-      Kết quả : 
-      ![img_30.png](img_30.png)
-      => ![img_31.png](img_31.png)
-6. 
+   
+6.  Start minikube
+    - Mở cmd Administrator
+    - Run: `minikube start --driver=hyperv`
+       
+    - Kết quả :
+       ![img_30.png](img_30.png)
+    - Run `minikube dashboard`
+       => ![img_31.png](img_31.png)
+    
+7. Example Practive: 
+    - Source code : kub-action-01-starting-setup
+    - B1: Build images dưới local:
+      + cd tới thư mục "kub-action-01-starting-setup"
+      + Run lệnh: `docker build -t kub-first-app .`
+      + Kết quả: 
+        ![img_32.png](img_32.png)
+    - B2: Tạo "Deployment Object"
+      ![img_33.png](img_33.png)
+   - 
