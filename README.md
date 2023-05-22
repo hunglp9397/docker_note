@@ -371,6 +371,22 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + Run lệnh: `docker build -t kub-first-app .`
       + Kết quả: 
         ![img_32.png](img_32.png)
-    - B2: Tạo "Deployment Object"
-      ![img_33.png](img_33.png)
-   - 
+    - B2: Tạo "Deployment Object" từ image vừa build
+    
+      + ` kubectl create deployment first-app --image=kub-first-app`
+      + => Kết quả:
+      + ![img_34.png](img_34.png)
+      + Tuy nhiên ta có thể thấy giá trị READY 0/1, tức là ko có deployments nào ready
+      + Tiếp tục Kiểm tra Nodes bằng lệnh : `kubectl get pods` 
+      + => Kết quả:
+      + ![img_35.png](img_35.png)
+      + Tuy nhiên ta có thể thâ là READY 0/1, tức là ko có pods nào ready
+      => Lý do là khi run lệnh tạo deployments, thì images phải là images cluster, còn images đang truyền vào là 'kub-first-app' lại là images ở dưới local
+      => Do đó cần push images local lên docker hub
+      => Trước tiên xóa deployments first-app rồi làm lại B2
+      +  Xóa deployments bằng lệnh: `kubectl delete deployment first-app`
+   - B2 (fix): Push images kub-first-app lên dockerhub
+      + Login docker hub bằng account : lephihung0997@gmail.com/Hungphile@9397
+      + Tạo repository: kub-first-app
+      + ![img_36.png](img_36.png)
+      + Tag images từ image kub-first-app bằng lệnh :`docker tag kub-first-app 123497/kub-first-app`
