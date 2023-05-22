@@ -388,5 +388,13 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
    - B2 (fix): Push images kub-first-app lên dockerhub
       + Login docker hub bằng account : lephihung0997@gmail.com/Hungphile@9397
       + Tạo repository: kub-first-app
-      + ![img_36.png](img_36.png)
+      + ==>![img_36.png](img_36.png)
       + Tag images từ image kub-first-app bằng lệnh :`docker tag kub-first-app 123497/kub-first-app`
+      + ==> ![img_37.png](img_37.png)
+      + Push lên docker hub: `docker push 123497/kub-first-app`
+   - B3 : Tạo "Deployment object "
+      + Tạo deployments: `kubectl create deployment first-app --image=kub-first-app`
+      + Get list deployments: `kubectl get deployments`
+      + Get Node : `kubectl get nodes`
+      +  => Kết quả:
+      + ![img_38.png](img_38.png)
