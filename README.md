@@ -398,7 +398,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + Get Node : `kubectl get pods`
       +  => Kết quả:
       + ![img_39.png](img_39.png)
-   - B4 : Kiểm tra treen minikube dashboard:
+   - B4 : Kiểm tra  minikube dashboard:
     ![img_40.png](img_40.png)
      (Như hình trên là làm đúng)
    
