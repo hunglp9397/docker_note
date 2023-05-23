@@ -393,8 +393,12 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + ==> ![img_37.png](img_37.png)
       + Push lên docker hub: `docker push 123497/kub-first-app`
    - B3 : Tạo "Deployment object "
-      + Tạo deployments: `kubectl create deployment first-app --image=kub-first-app`
+      + Tạo deployments: `kubectl create deployment first-app --image=123497/kub-first-app`
       + Get list deployments: `kubectl get deployments`
-      + Get Node : `kubectl get nodes`
+      + Get Node : `kubectl get pods`
       +  => Kết quả:
-      + ![img_38.png](img_38.png)
+      + ![img_39.png](img_39.png)
+   - B4 : Kiểm tra treen minikube dashboard:
+    ![img_40.png](img_40.png)
+     (Như hình trên là làm đúng)
+   
