@@ -453,3 +453,14 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + Tác dụng lớn nhất của việc Scaling là:
         + Khi ta truy cập đến /error (như B6) thì 1 pods sẽ chết, Tuy nhiên ta ko phải  đợi quá lâu đ cho pods đó restart lại
         + Bởi vì, Ta còn 2 pods khác READY (2 pods này chạy trên 2 IP khác nhau) 
+   
+   -  B8: Cập nhật Deployment
+      + Bình thường, ta cần sưả đổi code dưới local
+      + Sau khi update xong. Run lệnh sau : `docker build -t 123497/kub-first-app:2 .` (Cần tag version mới cho image mới này)
+      + Push image mới lên docker hub: `docker push 123497/kub-first-app:2`
+      + ==> kết quả trên docker hub : ![img_47.png](img_47.png)
+      + Để update deployment. Run: `kubectl set image deployment/first-app kub-first-app=123497/kub-first-app:2`
+      + Sau khi update xong. Ta có kết quả:
+      + ![img_48.png](img_48.png) (Nhiều dấu chấm than)
+      + Bonus: Ta có thể trace trên minikube dash board, các event diễn ra:
+      + ![img_49.png](img_49.png)
