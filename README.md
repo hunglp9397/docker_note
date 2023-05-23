@@ -372,11 +372,13 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     
 8. Example Practive: 
     - Source code : kub-action-01-starting-setup
+
     - B1: Build images dưới local:
       + cd tới thư mục "kub-action-01-starting-setup"
       + Run lệnh: `docker build -t kub-first-app .`
       + Kết quả: 
         ![img_32.png](img_32.png)
+
     - B2: Tạo "Deployment Object" từ image vừa build
     
       + ` kubectl create deployment first-app --image=kub-first-app`
@@ -391,6 +393,8 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       => Do đó cần push images local lên docker hub
       => Trước tiên xóa deployments first-app rồi làm lại B2
       +  Xóa deployments bằng lệnh: `kubectl delete deployment first-app`
+
+
    - B2 (fix): Push images kub-first-app lên dockerhub
       + Login docker hub bằng account : lephihung0997@gmail.com/Hungphile@9397
       + Tạo repository: kub-first-app
@@ -398,12 +402,16 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + Tag images từ image kub-first-app bằng lệnh :`docker tag kub-first-app 123497/kub-first-app`
       + ==> ![img_37.png](img_37.png)
       + Push lên docker hub: `docker push 123497/kub-first-app`
+
+
    - B3 : Tạo "Deployment object "
       + Tạo deployments: `kubectl create deployment first-app --image=123497/kub-first-app`
       + Get list deployments: `kubectl get deployments`
       + Get Node : `kubectl get pods`
       +  => Kết quả:
       + ![img_39.png](img_39.png)
+
+
    - B4 : Kiểm tra  minikube dashboard:
     ![img_40.png](img_40.png)
      (Như hình trên là làm đúng)
@@ -423,6 +431,8 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      + Kq : 
      + ![img_42.png](img_42.png)
      + ![img_43.png](img_43.png)
+
+
    - B6 : Test chức năng restart container:
      + Trong file app.js có đoạn code:
      + `app.get('/error', (req, res) => {
@@ -433,5 +443,13 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      + Tuy nhiên chỉ cần đợi 1 lúc thì container sẽ tự động restart (Lưu ý thời gian mỗi lần restart sau đó sẽ càng thêm lâu hơn để tránh khỏi vòng lặp vô hạn)
      + =>> Kq : Container tự động restart thành công
      + ![img_45.png](img_45.png)
+
+
    -  B7: Scaling
-      + Run ; 
+      + Run `kubectl scale deployment/first-app --replicas=3`  (3 pods)
+      + Kiểm tra : `kubectl get pods`
+      + ![img_46.png](img_46.png)
+      + Ta có thể thấy ở hình trên. 2 pods mới được sinh ra với số lần restart = 0
+      + Tác dụng lớn nhất của việc Scaling là:
+        + Khi ta truy cập đến /error (như B6) thì 1 pods sẽ chết, Tuy nhiên ta ko phải  đợi quá lâu đ cho pods đó restart lại
+        + Bởi vì, Ta còn 2 pods khác READY (2 pods này chạy trên 2 IP khác nhau) 
