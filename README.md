@@ -423,4 +423,15 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      + Kq : 
      + ![img_42.png](img_42.png)
      + ![img_43.png](img_43.png)
-   
+   - B6 : Test chức năng restart container:
+     + Trong file app.js có đoạn code:
+     + `app.get('/error', (req, res) => {
+       process.exit(1);
+       });`
+     + Tức là khi truy cập url /error thì chương trình sẽ dừng hoạt động
+     + ![img_44.png](img_44.png)
+     + Tuy nhiên chỉ cần đợi 1 lúc thì container sẽ tự động restart (Lưu ý thời gian mỗi lần restart sau đó sẽ càng thêm lâu hơn để tránh khỏi vòng lặp vô hạn)
+     + =>> Kq : Container tự động restart thành công
+     + ![img_45.png](img_45.png)
+   -  B7: Scaling
+      + Run ; 
