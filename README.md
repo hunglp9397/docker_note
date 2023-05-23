@@ -349,13 +349,19 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + Tạo cluster và Node instance ( worker node, master node)
       + Cấu hình API server, kubelet và các kubernetes services khác, hoặc các phần mềm trên nodes
       + Tạo các cloud resources cần thiết ( Load balancer, File System)
-5. Cài đặt kubernetes và minikube
+5.  Tìm hiểu về "Services" Object
+    - Services Object Expose Pods tới cluster hoặc ra bên ngoài
+    - Bởi vì mỗi pod có một IP address riêng đặc biệt là khi scalling pod thì mỗi IP của pod sẽ thay đổi
+    - Do đó Servervices có trách nhiệm nhóm các pod cùng với 1 share IP. Thằng share IP này là của service, nó ko thay đổi
+    - Services cho phép các mạng bên ngoài truy cập tới pod
+6. Cài đặt kubernetes và minikube
     - Active kubenetes trên docker desktop:
         ![img_29.png](img_29.png)
     - Cài đặt minikube (Xem hướng dẫn trên udemy)
     
+
    
-6.  Start minikube
+7. Start minikube
     - Mở cmd Administrator
     - Run: `minikube start --driver=hyperv`
        
@@ -364,7 +370,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - Run `minikube dashboard`
        => ![img_31.png](img_31.png)
     
-7. Example Practive: 
+8. Example Practive: 
     - Source code : kub-action-01-starting-setup
     - B1: Build images dưới local:
       + cd tới thư mục "kub-action-01-starting-setup"
@@ -401,4 +407,20 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
    - B4 : Kiểm tra  minikube dashboard:
     ![img_40.png](img_40.png)
      (Như hình trên là làm đúng)
+   - B5: Expose Deployment to Service
+     + Run:  `kubectl expose deployment first-app --port=8080 --type=LoadBalancer
+       service/first-app exposed`
+       (8080 là port của app.listen(8080) đc khai báo trong  file app.js)
+     + Lưu ý:
+        + type=ClusterIP(defaultType): tức là Chỉ có thể truy cập bên trong cụm cluster, và IP address cung cấp cho services này sẽ ko thể thay đổi
+        + type=NodePort : tức là deployment vừa tạo ở trên chỉ có thể expose bằng IP của WorkerNode
+        + type=Loadbalancer : tức là sẽ gen 1 IP address 
+     + Check services : `kubectl get services`
+     + ===> Kết quả:
+     + ![img_41.png](img_41.png)
+   - B6 : Run app service:
+     + Run trên cmd administrator : `minikube service first-app`
+     + Kq : 
+     + ![img_42.png](img_42.png)
+     + ![img_43.png](img_43.png)
    
