@@ -334,10 +334,19 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      + Tương tự, có thể có nhiều worker node chạy trên các port khác nhau
      + kubelet : Tạo kết nối giữa Worker node và master node
      + kubeproxy : Quản lý node và kết nối của pod
+   - Master Nodes:
+     + Bao gồm các thành phần sau:
+        + API Server : LÀ 1 API để kubelets kết nối
+        + Theo dõi các Pods mới, Xác định Worker Node để chạy Pod mới đó
+        + Kube Controller Manager: Theo dõi và điều khiển các Workernodes đảm bảo số lượng Pods
+        + Cloud Controller Manager : 
+     +  ![img_50.png](img_50.png)
+     + Vai trò chính của Master Node: 
+         Tạo và start pods, thay thế nếu pods dừng hoạt động) của các worker node
    - Proxy : 
      + Thành phần trong Worker Node,để điều khiển, quản lý lưu lượng mạng, Đảm bảo các Pod chạy trên internet
-   - Master Node:
-     + Là một server khác, một máy remote khác điều khiển hoạt động (Tạo và start pods, thay thế nếu pods dừng hoạt động) của các worker node
+   - Services:
+     + 
      
 ![img_28.png](img_28.png)
 
@@ -367,7 +376,8 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
        
     - Kết quả :
        ![img_30.png](img_30.png)
-    - Run `minikube dashboard`
+    - Run `
+    - `
        => ![img_31.png](img_31.png)
     
 8. Example Practive: 
@@ -403,7 +413,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + ==> ![img_37.png](img_37.png)
       + Push lên docker hub: `docker push 123497/kub-first-app`
 
-
+þ
    - B3 : Tạo "Deployment object "
       + Tạo deployments: `kubectl create deployment first-app --image=123497/kub-first-app`
       + Get list deployments: `kubectl get deployments`
@@ -416,8 +426,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     ![img_40.png](img_40.png)
      (Như hình trên là làm đúng)
    - B5: Expose Deployment to Service
-     + Run:  `kubectl expose deployment first-app --port=8080 --type=LoadBalancer
-       service/first-app exposed`
+     + Run:  `kubectl expose deployment first-app --port=8080 --type=LoadBalancer`
        (8080 là port của app.listen(8080) đc khai báo trong  file app.js)
      + Lưu ý:
         + type=ClusterIP(defaultType): tức là Chỉ có thể truy cập bên trong cụm cluster, và IP address cung cấp cho services này sẽ ko thể thay đổi
