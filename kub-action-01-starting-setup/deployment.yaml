@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment #Xác định loại kubernetes object, Ví dụ : Deployment, services, Job
+metadata:
+  name: second-app-deployment # tên của kubernetes Object, Ở đây là tên của Deployment
+spec:  # Viết tắt của Specification
+  replicas: 3
+  selector:
+    matchLabels: # Xác định Pod nào sẽ đc điều khiển
+      app: second-app
+  template:    #Pod
+    metadata:
+      labels:
+        app: second-app #Tên node là Second-app
+    spec:    #Containers
+      containers:
+        - name: second-node
+          image: 123497/kub-first-app:2
+
+
+
+
+

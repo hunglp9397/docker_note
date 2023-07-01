@@ -473,3 +473,31 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + ![img_48.png](img_48.png) (Nhiều dấu chấm than)
       + Bonus: Ta có thể trace trên minikube dash board, các event diễn ra:
       + ![img_49.png](img_49.png)
+
+
+   -  B9: Tạo file config Deployment
+      + Đặt vấn đề : Ta thực hiện rất nhiều bước (Từ B1 -> B8 để thực hiện run app) -> Rất mất tgian và cũng k đảm bảo  => Do đó cần tạo config deployment vào file config
+      + Tiền đề : Xóa service và deployments
+      + ![img_51.png](img_51.png)
+      + Trong thư mục project "kub-action-01-starting-setup", Tạo file deployment.yaml
+
+   - B10: Run Deployment config file
+      + Tạo deployment bằng lệnh :` kubectl apply -f deployment.yaml`
+      + Cấu hình như ảnh dưới đây:
+      + ![img_53.png](img_53.png)
+      + Kiểm tra deployments vừa tạo : `kubectl get deployments`
+      + ![img_52.png](img_52.png)
+
+   - B11: tạo file services.yaml và run file config service
+      +  Trong thư mực project "kub-action-01-starting-setup", Tạo file service.yaml
+      + Cấu hình như ảnh Sau:
+      + ![img_54.png](img_54.png)
+      + Tạo service bằng lệnh `kubectl apply -f service.yaml`
+      + Kiểm tra service vừa tạo: `kubectl get service`
+      + ![img_55.png](img_55.png)
+
+     =========>>>>>>>>
+     + Cuối cùng, Expose Service vừa tạo để chạy app:
+     + (Run bbằng cmd Administrator) `minikube service backend` (backend là tên ở metadata trong File service.yaml)
+     + ![img_56.png](img_56.png)
+     + DONE~
