@@ -308,7 +308,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
 
 
-# **Phần 6: KUBERNETES**
+# **Phần 6: KUBERNETES BASIC**
 1. Khái niệm :
    - Là 1 platform deploy, scaling, quản lí các ứng dụng hoạt động dựa trên container
    - Các ứng dụng cos thể khác nhau về kích thước, lên tới hàng nghìn server
@@ -511,4 +511,16 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
          + ![img_57.png](img_57.png)
          + Xóa deployment và service bằng lệnh : `kubectl delete -f deployment.yaml -f service.yaml`
          + Apply lại file master-deployment.yaml vừa tạo bằng lệnh: `kubectl apply -f master-deployment.yaml`
- 
+
+
+# **Phần 7: QUẢN LÝ DATA VÀ VOLUME TRONG KUBERNETES**
+
+[Source Code : ](kub-action-01-starting-setup) _kub-action-01-starting-setup_
+1. Build Images và run app:
+    - cd tới thư mục kub-action-01-starting-setup
+    - Run lệnh : `docker-compose up -d --build`
+    - Kết quả: ![img_58.png](img_58.png)
+    - ![img_59.png](img_59.png)
+    - ![img_60.png](img_60.png)
+    - ![img_61.png](img_61.png)
+    - Lưu ý: Trong file docker-compose.yaml đã khai báo volumes =>  Nên là Khi Dừng container bằng lệnh: `docker-compose down`, Sau đó run  lại (`docker-compose up`) thì data vẫn còn đó
