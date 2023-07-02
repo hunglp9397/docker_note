@@ -1,3 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector: #Selector xác định object mà Service này sẽ điều khiển, Ở đây là pod
+    app: second-app
+  ports:
+    - protocol: 'TCP'
+      port: 80
+      targetPort: 8080  # APP run ở cổng 8080
+  type: LoadBalancer
+---
 apiVersion: apps/v1
 kind: Deployment #Xác định loại kubernetes object, Ví dụ : Deployment, services, Job
 metadata:
@@ -15,13 +28,6 @@ spec:  # Viết tắt của Specification
       containers:
         - name: second-node
           image: 123497/kub-first-app:2
-          imagePullPolicy: Always # Luôn luôn pull image mới nhất
-          livenessProbe:  # Xác định khi nào container up và running
-            httpGet:
-              path: /
-              port: 8080
-            periodSeconds: 10  # Check mỗi 10s
-            initialDelaySeconds: 5 # Bao lâu delay sau mỗi lần check
 
 
 

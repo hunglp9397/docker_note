@@ -376,8 +376,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
        
     - Kết quả :
        ![img_30.png](img_30.png)
-    - Run `
-    - `
+    - Run `minikube dashboard`
        => ![img_31.png](img_31.png)
     
 8. Example Practive: 
@@ -504,5 +503,12 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
         
       ==========================
 
-      Bonus : cách xóa deployment và services
-      Chạy lệnh sau : kubectl delete -f deployment.yaml -f service.yaml
+     +  Bonus1. cách xóa deployment và services
+         + Chạy lệnh sau : kubectl delete -f deployment.yaml -f service.yaml
+     + Bonus2 : Có thể gộp file service.yaml và deployment.yaml thành một
+         + Cách làm: Tạo file master-deployment.yaml
+         + Cấu hình như sau: 
+         + ![img_57.png](img_57.png)
+         + Xóa deployment và service bằng lệnh : `kubectl delete -f deployment.yaml -f service.yaml`
+         + Apply lại file master-deployment.yaml vừa tạo bằng lệnh: `kubectl apply -f master-deployment.yaml`
+ 
