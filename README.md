@@ -501,3 +501,8 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      + (Run bbằng cmd Administrator) `minikube service backend` (backend là tên ở metadata trong File service.yaml)
      + ![img_56.png](img_56.png)
      + DONE~
+        
+      ==========================
+
+      Bonus : cách xóa deployment và services
+      Chạy lệnh sau : kubectl delete -f deployment.yaml -f service.yaml
