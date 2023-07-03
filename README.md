@@ -535,3 +535,15 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - ![img_60.png](img_60.png)
     - ![img_61.png](img_61.png)
     - Lưu ý: Trong file docker-compose.yaml đã khai báo volumes =>  Nên là Khi Dừng container bằng lệnh: `docker-compose down`, Sau đó run  lại (`docker-compose up`) thì data vẫn còn đó
+3. Tạo deployment và services
+    - cd tới thư mục kub-data-01-starting-setup
+    - Tạo file deployment.yaml
+    - ![img_62.png](img_62.png)
+    - Tạo file service.yaml
+    - ![img_63.png](img_63.png)
+    - Tạo repository trên Docker hub với tên : `kub-data-demo`
+    - Kết quả: ![img_64.png](img_64.png)
+    - Build docker images bằng lệnh : `docker build -t 123497/kub-data-demo .`
+    - Push images lên docker hub bằng lệnh: `docker push 123497/kub-data-demo`
+    - Kết quả: ![img_65.png](img_65.png)
+     

@@ -1,0 +1,12 @@
+apiService: v1
+kind: Service
+metadata:
+  name: story-service
+spec:
+  selector:
+    app:story
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
+

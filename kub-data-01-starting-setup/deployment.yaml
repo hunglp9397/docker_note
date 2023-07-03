@@ -1,0 +1,17 @@
+apiService: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 1 #Pod replica
+  selector:
+    matchLabels:
+      app: story
+  template: # Pod template
+    metadata:
+      labels: # Labels của pod
+        app: story
+    spec:
+      containers: #Khai báo container trong pod
+        - name: story
+          image: 123497/kub-data-demo
