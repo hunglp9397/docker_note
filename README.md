@@ -516,7 +516,18 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 # **Phần 7: QUẢN LÝ DATA VÀ VOLUME TRONG KUBERNETES**
 
 [Source Code : ](kub-action-01-starting-setup) _kub-action-01-starting-setup_
-1. Build Images và run app:
+1. Kiến thức cơ bản về Volumes trong kubernetes
+    - K8S có thể mount volumes vào trong container
+    - Vòng đời của volume phụ thuộc vào vòng đời của Pod
+    - Volume sẽ bị xóa khi Pod destroy
+    - So sánh khác nhau giữa "Kubernetes Volume" và "Docker Volume"
+       + Kubernetes Volume:
+            + Hỗ trợ nhiều driver và các types khác nhau, Ta nắm được data được lưu ở đâu( các môi trường khác nhau, trên AWS)
+            + Volumes bảo đảm container restart, nhưng k bảo đảm pod restart
+       + Docker Volume
+            + Không hỗ trợ nhiều môi trường( chỉ có local hoặc dev)
+            + Volumes sẽ tồn tại mãi mãi trên machine nào đó ( Trừ khi cài lại os, reset máy)
+2. Build Images và run app:
     - cd tới thư mục kub-action-01-starting-setup
     - Run lệnh : `docker-compose up -d --build`
     - Kết quả: ![img_58.png](img_58.png)
