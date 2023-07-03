@@ -528,7 +528,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
             + Không hỗ trợ nhiều môi trường( chỉ có local hoặc dev)
             + Volumes sẽ tồn tại mãi mãi trên machine nào đó ( Trừ khi cài lại os, reset máy)
 2. Build Images và run app:
-    - cd tới thư mục kub-action-01-starting-setup
+    - cd tới thư mục kub-action-01-starting-setup (Quyền administrator)
     - Run lệnh : `docker-compose up -d --build`
     - Kết quả: ![img_58.png](img_58.png)
     - ![img_59.png](img_59.png)
@@ -536,14 +536,21 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - ![img_61.png](img_61.png)
     - Lưu ý: Trong file docker-compose.yaml đã khai báo volumes =>  Nên là Khi Dừng container bằng lệnh: `docker-compose down`, Sau đó run  lại (`docker-compose up`) thì data vẫn còn đó
 3. Tạo deployment và services
-    - cd tới thư mục kub-data-01-starting-setup
+    - cd tới thư mục kub-data-01-starting-setup ( Quyền administrator)
     - Tạo file deployment.yaml
-    - ![img_62.png](img_62.png)
+    ![img_66.png](img_66.png)
     - Tạo file service.yaml
-    - ![img_63.png](img_63.png)
+    ![img_67.png](img_67.png)
     - Tạo repository trên Docker hub với tên : `kub-data-demo`
     - Kết quả: ![img_64.png](img_64.png)
     - Build docker images bằng lệnh : `docker build -t 123497/kub-data-demo .`
     - Push images lên docker hub bằng lệnh: `docker push 123497/kub-data-demo`
     - Kết quả: ![img_65.png](img_65.png)
-     
+    - Vẫn trong đường dẫn thư mục đó, Apply file service.yaml và deployement.yaml bằng lệnh: `kubectl apply -f service.yaml -f deployment.yaml`
+    - Run app bằng lệnh: `minikube service story-service` (story-service chính là metadata name trong file service.yaml)
+    - Kết quả: 
+    - ![img_68.png](img_68.png)
+    - Ta có thể thấy App đã được chạy trên host http://172.18.10.209:32303
+    - Call thử api trên host http://172.18.10.209:32303
+    - Kết quả:
+    - ![img_69.png](img_69.png)
