@@ -14,4 +14,17 @@ spec:
     spec:
       containers: #Khai báo container trong pod
         - name: story
-          image: 123497/kub-data-demo
+          image: 123497/kub-data-demo:1
+          # Xác định volume nào sẽ được mount vào container(Vì ở bên dưới có tể khai báo nhiều volume).
+          # Ở đây /app là khai báo WORKDIR trong file Dockerfile
+          # Ở đây /story là folder lưu data, được khai báo trong file app.js. Đây : const filePath = path.join(__dirname, 'story', 'text.txt');
+          volumeMounts:
+            - mountPath: /app/story
+              name: story-volume
+      volumes:
+        - name: story-volume
+          emptyDir: {}  # Ở đây dùng volume với type là emptyDir
+                        # nghĩa là bất kì khi nào pods được start, hoặc restart thì sẽ tạo ra một thư mục trống mới, container có thể ghi data vào thư mục này
+                        # Do đó, bất cứ khi nào container bị restart -> data sẽ được bảo đảm
+                        # tuy nhiên nếu pods bị remove , thì emptyDir này cũng sẽ bị xóa -> Do đó data trong volumes cũng sẽ mất
+

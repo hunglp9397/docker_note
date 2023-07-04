@@ -554,3 +554,33 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - Call thử api trên host http://172.18.10.209:32303
     - Kết quả:
     - ![img_69.png](img_69.png)
+4. Tìm hiểu volume : "emptyDir"
+    - Trong file app.js có định nghĩa một route dừng app như sau:
+        `app.get('/error', () => {
+      process.exit(1);
+      });`
+
+    - Build lại image với tag mới bằng lệnh sau: `docker build -t 123497/kub-data-demo:1 .`
+    - Sau đó push lên dockerhub: `docker push 123497/kub-data-demo:1`
+    - ![img_70.png](img_70.png)
+    - Update file deployment với images tag mới:
+    - ![img_71.png](img_71.png)
+    - Apply lại deployment.yaml : `kubectl apply -f deployment.yaml`
+    - Sau khi apply lại file deployment mới này, thì một pod mới sẽ được tạo mới lại với container mới
+    - Kiểm tra pod: `kubectl get pods`
+    - ![img_72.png](img_72.png)
+    - Trước khi apply deployment chứa images mới
+    - API Get Story đang như sau:
+    - [img_78.png](img_78.png)
+    - Sau khi gọi đến đường dâẫn /error
+    - Thì API Get Story như sau:
+    - ![img_75.png](img_75.png)
+    - Giải thích: Khi container được restart(Do build lại images mới) , k phải lả restart pods -> Khi đó data của container sẽ bị mất => Do đó cần volumes
+    - Thêm volumes config vào file deployment.yaml như sau:
+    - ![img_76.png](img_76.png)
+    - Apply lại file deployment.yaml:`kubectl apply -f deployment.yaml`
+    - Sau đó call lại API POST: ![img_77.png](img_77.png)
+    - API GET : ![img_79.png](img_79.png)
+    
+    - =>> **Tổng kết:** Sau khi Fix xong, Ngay cả khi gọi API /error (Dẫn đến container restart) thì API GET vẫn trả ra đúng kết quả, Do data đã đc ghi lại dưới volumes
+5. 
