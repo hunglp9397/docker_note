@@ -516,10 +516,12 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 # **Phần 7: QUẢN LÝ DATA VÀ VOLUME TRONG KUBERNETES**
 
 [Source Code : ](kub-action-01-starting-setup) _kub-action-01-starting-setup_
-1. Kiến thức cơ bản về Volumes trong kubernetes
+
+
+1. **Kiến thức cơ bản về Volumes trong kubernetes**
     - K8S có thể mount volumes vào trong container
     - Vòng đời của volume phụ thuộc vào vòng đời của Pod
-    - Volume sẽ bị xóa khi Pod destroy
+    - Volume sẽ bị xóa khi Pod bị xóa
     - So sánh khác nhau giữa "Kubernetes Volume" và "Docker Volume"
        + Kubernetes Volume:
             + Hỗ trợ nhiều driver và các types khác nhau, Ta nắm được data được lưu ở đâu( các môi trường khác nhau, trên AWS)
@@ -527,7 +529,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
        + Docker Volume
             + Không hỗ trợ nhiều môi trường( chỉ có local hoặc dev)
             + Volumes sẽ tồn tại mãi mãi trên machine nào đó ( Trừ khi cài lại os, reset máy)
-2. Build Images và run app:
+2. **Build Images và run app:**
     - cd tới thư mục kub-action-01-starting-setup (Quyền administrator)
     - Run lệnh : `docker-compose up -d --build`
     - Kết quả: ![img_58.png](img_58.png)
@@ -535,7 +537,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - ![img_60.png](img_60.png)
     - ![img_61.png](img_61.png)
     - Lưu ý: Trong file docker-compose.yaml đã khai báo volumes =>  Nên là Khi Dừng container bằng lệnh: `docker-compose down`, Sau đó run  lại (`docker-compose up`) thì data vẫn còn đó
-3. Tạo deployment và services
+3. **Tạo deployment và services**
     - cd tới thư mục kub-data-01-starting-setup ( Quyền administrator)
     - Tạo file deployment.yaml
     ![img_66.png](img_66.png)
@@ -554,7 +556,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - Call thử api trên host http://172.18.10.209:32303
     - Kết quả:
     - ![img_69.png](img_69.png)
-4. Tìm hiểu volume : "emptyDir"
+4. **Tìm hiểu volume : "emptyDir"**
     - Trong file app.js có định nghĩa một route dừng app như sau:
         `app.get('/error', () => {
       process.exit(1);
@@ -583,4 +585,18 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - API GET : ![img_79.png](img_79.png)
     
     - =>> **Tổng kết:** Sau khi Fix xong, Ngay cả khi gọi API /error (Dẫn đến container restart) thì API GET vẫn trả ra đúng kết quả, Do data đã đc ghi lại dưới volumes
-5. 
+   
+5.   **Tìm hiểu volume "hostPath"**
+   - Đặt vấn đề : ở ví dụ trước podsReplica chỉ là 1
+   - Khi đó Mỗi lần truy cập đến API URL /error thì ta phải đợi cho container restart, 
+   - Trong tgian đợi đó thì lúc ta gọi API GET /story th kết quả sẽ chưa có do container chưa start xong
+
+   - Cách dùng emptyDir volume chỉ phù hợp với 1 podsReplica
+   - Khi ta có nhiều podsReplica, ta cần chia sẽ dữ liệu giữa các pods với nhau, để đảm bảo trong thời gian pod này chết, thì pod khác ngay lập tức được dùng và có data ở trong volumes
+   - Sửa file deployment.yaml như sau:
+   - ![img_80.png](img_80.png)
+   - (Trong hình trên ta khai báo 2 pods replica và Thay đổi volume type là hostPath)
+
+
+6.  **Tìm hiểu volume CSI volume**
+    - 
