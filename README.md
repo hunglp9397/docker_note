@@ -598,5 +598,16 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
    - (Trong hình trên ta khai báo 2 pods replica và Thay đổi volume type là hostPath)
 
 
-6.  **Tìm hiểu volume CSI volume**
-    - 
+6. **Tìm hiểu persistent volumes**
+    - Đặt vấn đề: volumes sẽ bị xóa khi mà Pods bị xóa
+      - Và Dùng hostPath volumes chỉ hoạt động treen env mà có 1 node
+      - Pod và Node độc lập với Volume
+      - Persistent Volumes giải quyết được vấn đề này:
+        + ![img_81.png](img_81.png)
+        + Ta ko lưu data trong Node, Mà lưu data trong Cluster
+        + Có một persistent Volume Claim trỏ tới volume trong cụm Cluster đó ( như hình)
+7.  **VÍ dụ sử dụng Persistent Volumes**
+    -  [Source: kub-data-01-starting-setup](kub-data-01-starting-setup)
+    - cd tới thư mục project : kub-data-01-starting-setup
+    - Tạo Persistent Volume: Tạo file host-pv.yaml
+    - Tạo Persistent Volume Claim: ạo file host-pvc.yaml
