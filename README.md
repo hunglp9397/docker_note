@@ -610,4 +610,8 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     -  [Source: kub-data-01-starting-setup](kub-data-01-starting-setup)
     - cd tới thư mục project : kub-data-01-starting-setup
     - Tạo Persistent Volume: Tạo file host-pv.yaml
-    - Tạo Persistent Volume Claim: ạo file host-pvc.yaml
+    - ![img_82.png](img_82.png)
+    - Tạo Persistent Volume Claim: Tạo file host-pvc.yaml
+    - ![img_83.png](img_83.png)
+    - Sửa lại file deployment.yaml như sau:
+    - ![img_84.png](img_84.png)
