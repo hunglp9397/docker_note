@@ -635,18 +635,33 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
           + Được định nghiax và khởi tạo độc lập (cùng với PersistentVolumeClaim)
           + Chỉ cần khai báo 1 lần và sử dụng được nhiều lần
 
-8. **Sử dụng Environment Var và ConfigMaps**
-    - Environment Variables
-        + Ta có thể khai báo các biến môi trường trong phần configs containers của file deployment.yaml
-            + ![img_85.png](img_85.png)
-            + Sử dụng biến môi trường trong file app.js (folder kub-data-01-starting-setup) : `const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');', 'text.txt');`
-        + Sau đó sửa lại tag của images thành tag2 : ![img_87.png](img_87.png)
-        + Build lại images bằng lệnh : `docker build -t 123497/kub-data-demo:3 .`
-        + Push tag2 này lên docker hub : `docker push 123497/kub-data-demo:3`
-        + Apply lại file deployment.yaml : `kubectl apply -f=deployment.yaml`
-    
-        + Kết quả: Pods cũ sẽ bị xóa, và thay thế bằng 2 pods mới:
-          + ![img_88.png](img_88.png)
-          + ![img_89.png](img_89.png)
+8. **Sử dụng Environment Variables**
 
+   - Ta có thể khai báo các biến môi trường trong phần configs containers của file deployment.yaml
+        + ![img_85.png](img_85.png)
+        + Sử dụng biến môi trường trong file app.js (folder kub-data-01-starting-setup) : `const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');', 'text.txt');`
+   - Sau đó sửa lại tag của images thành tag3 : ![img_90.png](img_90.png)
+   - Build lại images bằng lệnh : `docker build -t 123497/kub-data-demo:3 .`
+   - Push tag2 này lên docker hub : `docker push 123497/kub-data-demo:3`
+   - Apply lại file deployment.yaml : `kubectl apply -f=deployment.yaml`
+
+   - Kết quả: Pods cũ sẽ bị xóa, và thay thế bằng 2 pods mới:
+       + ![img_88.png](img_88.png)
+       + ![img_89.png](img_89.png)
+   - ===> Call API vẫn bình thường là đúng
+
+
+9.  **Sử dụng config maps**
+    - Tạo file environment.yaml và config như sau:
+        + ![img_92.png](img_92.png)
+    - Sửa lại file deployment.yaml như sau:
+        + ![img_91.png](img_91.png)
+
+    - Apply 2 file deployment.yaml và environment.yaml
+        + `kubeclt apply -f=environment.yaml`
+        + `kubectl apply -f=deployment.yaml`
+
+    - ===> Call API vẫn bình thường là đúng
+        
+    
     
