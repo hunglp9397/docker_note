@@ -142,26 +142,25 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
 
     `docker run --name mongodb --rm -d -p 27017:27017 mongo`
 
-#### - B2 : Dockerize backend:
-
-    + Tạo Dockerfile : 
-    ![img_3.png](images/img_3.png)
-    + Trong file app.js, Update url connect mongo : 
-        ![img_4.png](images/img_4.png)
-    + Build image : `docker build -t goals-node .`
-    + Run container từ images vừa build : `docker run --name goals-backend --rm -d -p 80:80 goals-node`
+####  B2 : Dockerize backend:
+   -  Tạo Dockerfile : 
+      + ![img_3.png](images/img_3.png)
+   -  Trong file app.js, Update url connect mongo : 
+      +  ![img_4.png](images/img_4.png)
+   -  Build image : `docker build -t goals-node .`
+   -  Run container từ images vừa build : `docker run --name goals-backend --rm -d -p 80:80 goals-node`
   
 #### - B2 : Dockerize Frontend:
 
-    + Tạo Docker file
-    ![img_5.png](images/img_5.png)
-    + Build image : `docker build -t goals-react .`
-    + Run container từ images vừa build : `docker run --name goals-frontend --rm -d -p 3000:3000 goals-react`
- => Kết quả : 
-    ![img_6.png](images/img_6.png)
- * Note : Nhận thấy 3 cách run container trên đều cần export port
+   -  Tạo Docker file
+       + ![img_5.png](images/img_5.png)
+   -   Build image : `docker build -t goals-react .`
+   -   Run container từ images vừa build : `docker run --name goals-frontend --rm -d -p 3000:3000 goals-react`
+   -  Kết quả : 
+      + ![img_6.png](images/img_6.png)
+   - Note : Nhận thấy 3 cách run container trên đều cần export port
  
-  => Bình thường cũng k ai làm ntn. Best practive là run 3 container dưới 1 network, khi đó thì sẽ k cần export
+     + => Bình thường cũng k ai làm ntn. Best practive là run 3 container dưới 1 network, khi đó thì sẽ k cần export
  
 [Best practive]:
 
@@ -181,15 +180,15 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
   `docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INIT_DB_ROOT_USERNAME=hunglp -e MONGO_INITDB_ROOT_PASSWORD=secret  mongo
 `
 
-####   -B3 : Run backend trong network vừa tạo :
+#### B3 : Run backend trong network vừa tạo :
 
-    Tuy nhiên trước đó cần sửa lại file app.js, sửa lại url tới db : 
-    ![img_8.png](images/img_8.png)
-    Ở đây mongodb chính là tên container vừa run ở B2. Ở đây ta vẫn cần phải export cổng 80. Vẫn cần network vì node api call tới DB
-    Build lại images rồi run backend :    `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
-    + Lưu ý: Do mongodb container đã set authen username/password (lưu ý 2 bước 2) Nên lại phải sửa lại app.js như sau : 
-    ![img_12.png](images/img_12.png)
-    Build lại images rồi run backend : `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
+   -  Tuy nhiên trước đó cần sửa lại file app.js, sửa lại url tới db : 
+   +   ![img_8.png](images/img_8.png)
+   - Ở đây mongodb chính là tên container vừa run ở B2. Ở đây ta vẫn cần phải export cổng 80. Vẫn cần network vì node api call tới DB
+   - Build lại images rồi run backend :    `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
+   - Lưu ý: Do mongodb container đã set authen username/password (lưu ý 2 bước 2) Nên lại phải sửa lại app.js như sau : 
+     + ![img_12.png](images/img_12.png)
+   - Build lại images rồi run backend : `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
     
 ####   -B4 : Run frontend trong network vừa tạo :
 
