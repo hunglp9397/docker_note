@@ -1,8 +1,26 @@
-## **Phần 1: Các lệnh cơ bản**
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+* ## [PHẦN 1 : Docker cơ bản]()
+* ## [Phần 2 : Build multi container]()
+* ## [Phần 3 : Build multi container bằng Dockercompose]()
+* ## [Phần 4 : Thực hành Build multi container]()
+* ## [Phần 5: Deploy container lên AWS EC2]()
+* ## [Phần 6: Kubernetes basic]()
+* ## [Phần 7: Quản lý data và volumes trong Kubernetes]()
+
+🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+
+
+
+## [PHẦN 1 : Docker cơ bản]()
 
 Có 2 cách lưu trữ dữ liệu từ container ra ngoài máy host:
 
-1.Docker volumns : Là folder ở máy host mà được mounted và mapped vào trong container
+#### 1.Docker volumns : 
+
+Là folder ở máy host mà được mounted và mapped vào trong container
 
 Khi thêm volumns vào trong container. Volumns sẽ không bị xóa đi khi container bị xóa -> Cho phép persist data mặc dù container đã bị shutdown
 
@@ -16,7 +34,9 @@ Khi thêm volumns vào trong container. Volumns sẽ không bị xóa đi khi co
 
 
 
-2. Bind mounted : Về cơ bản khi run container. Giả sử cần sửa file ở máy host, thì app được build ở máy host không ăn theo code
+#### 2. Bind mounted :
+
+Về cơ bản khi run container. Giả sử cần sửa file ở máy host, thì app được build ở máy host không ăn theo code
 
 Mỗi lần sửa code cần phải build lại images, sau đó run lại container -> Việc này là rất cồng kềnh
 
@@ -42,7 +62,7 @@ VD :Create images:
 
 
 
-3. Dockerignore
+#### 3. Dockerignore
 
    không nên copy tất cả các file từ máy host vào container.
    .Dockerignore xác định file hoặc folder nào không nên coy bởi lệnh COPY trong Dockerfile
@@ -51,7 +71,7 @@ VD :Create images:
 
 
 
-4. Environ variable
+#### 4. Environ variable
 
 Trong docker file có thể set environment bằng lệnh :' "ENV"
 ví dụ : ENV PORT 80
@@ -68,7 +88,7 @@ Khi đó, run docker thêm lệnh : "--env-file ./.env"
 `docker run -d --rm -p 3000:80 --env-file ./.env  --name feedback-app -v feedback:/app/feedback -v "D:/Workspace/Learning/Devops/data-volumes-01-starting-setup:/app:ro" -v /app/node_modules -v /app/temp  feedback-node:env
 `
 
-5. Argument variable
+#### 5. Argument variable
 
 - Sử dụng ARG:
 
@@ -80,7 +100,8 @@ Khi đó, run docker thêm lệnh : "--env-file ./.env"
 
 
 
-**Phần 2 : Docker network :** 
+#### 6. Docker network :
+
 [source code : ](/networks-starting-setup)
 
 - "host.docker.interal" là host local bên trong container docker
@@ -114,12 +135,15 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
 
 ---------------------------------------------------------------------------------------------------------------
 
-# **Phần 2 : Build multi container**
+## **PHẦN 2: Build multi container**
 [Source code :](/multi-01-starting-setup) 
-- B1 : Run Mongodb container : 
+
+#### - B1 : Run Mongodb container : 
+
     `docker run --name mongodb --rm -d -p 27017:27017 mongo`
 
-- B2 : Dockerize backend:
+#### - B2 : Dockerize backend:
+
     + Tạo Dockerfile : 
     ![img_3.png](images/img_3.png)
     + Trong file app.js, Update url connect mongo : 
@@ -127,7 +151,8 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
     + Build image : `docker build -t goals-node .`
     + Run container từ images vừa build : `docker run --name goals-backend --rm -d -p 80:80 goals-node`
   
-- B2 : Dockerize Frontend:
+#### - B2 : Dockerize Frontend:
+
     + Tạo Docker file
     ![img_5.png](images/img_5.png)
     + Build image : `docker build -t goals-react .`
@@ -139,12 +164,15 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
   => Bình thường cũng k ai làm ntn. Best practive là run 3 container dưới 1 network, khi đó thì sẽ k cần export
  
 [Best practive]:
- - B1 : 
+
+####  - B1 : 
+
    + Tạo network  `docker network create goals-net`
    + Kiểm tra : `docker network ls`
      ![img_7.png](images/img_7.png)
     
-  -B2 : Run mongo container trong network vừa tạo  `docker run --name mongodb --rm -d --network goals-net mongo`
+####   -B2 : Run mongo container trong network vừa tạo 
+`docker run --name mongodb --rm -d --network goals-net mongo`
    + Lưu ý 1: Khi stop container docker thì dữ liệu mà submit form sẽ mất. Do đó cần phải thêm volume khi run mongoDB container.
      Do đó câu lệnh run container mongodb đúng là như sau : 
     `docker run --name mongodb -v data:/data/db --rm -d --network goals-net mongo`
@@ -153,7 +181,8 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
   `docker run --name mongodb -v data:/data/db --rm -d --network goals-net -e MONGO_INIT_DB_ROOT_USERNAME=hunglp -e MONGO_INITDB_ROOT_PASSWORD=secret  mongo
 `
 
-  -B3 : Run backend trong network vừa tạo :
+####   -B3 : Run backend trong network vừa tạo :
+
     Tuy nhiên trước đó cần sửa lại file app.js, sửa lại url tới db : 
     ![img_8.png](images/img_8.png)
     Ở đây mongodb chính là tên container vừa run ở B2. Ở đây ta vẫn cần phải export cổng 80. Vẫn cần network vì node api call tới DB
@@ -162,7 +191,8 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
     ![img_12.png](images/img_12.png)
     Build lại images rồi run backend : `docker run --name goals-backend --rm -d --network goals-net -p 80:80 goals-node`
     
-  -B4 : Run frontend trong network vừa tạo :
+####   -B4 : Run frontend trong network vừa tạo :
+
    Tuy nhiên cần sửa lại file App.js , sửa lại url tới api mà FE gọi tới BE là localhost. Sau đó vẫn cần phải export cổng 3000
     ![img_9.png](images/img_9.png)
     Build lại images rồi run frontend container `docker run --name goals-frontend --rm -d --network goals-net -p 3000:3000 goals-react`
@@ -172,22 +202,25 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
    ![img_10.png](images/img_10.png)
 
 # **Phần 3 : Build multi container bằng DockerCompose**
-[Source code :](/compose-01-starting-setup) 
-1. Những lưu ý khi dùng dockercompose để build thay cho cách 2 : 
+[Source code:compose-01-starting-setup](/compose-01-starting-setup) 
+
+#### 1. Những lưu ý khi dùng dockercompose để build thay cho cách 2 : 
     
 - Docker run container với lệnh  ` -d (detach mode)`
 - Docker run container với ` --rm (tự động remove khi stop container)`
 - Tự động tạo network cho tất cả các service trong file dockercompose.yml
 
 
-2. Lệnh để chạy dockercompose ; 
+#### 2. Lệnh để chạy dockercompose ; 
+
     `docker compose up -d`
 
-3. Lệnh để stop all services: (Ở đây sẽ xóa container, xóa network nhưng chưa xóa volume)
+#### 3. Lệnh để stop all services: (Ở đây sẽ xóa container, xóa network nhưng chưa xóa volume)
+
    ` docker compose down`
  => Để stop all services đồng thời xóa luôn volume dùng lệnh sau :` docker compose down -v` (tuy nhiên k nên dùng vì sẽ xóa hết data trong volume)
 
-4. Lệnh để chỉ chạy 1 service trong khi docker compose khai báo nhiều services :
+#### 4. Lệnh để chỉ chạy 1 service trong khi docker compose khai báo nhiều services :
     
     `docker compose run <tên_service>` (Ở đây sẽ k xóa contaienr khi stop container)
    => Muốn container bị remove khi bị stop thì dùng lệnh --rm  : `docker compose run --rm <tên_service>`
@@ -195,25 +228,35 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
 docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
 ![img_13.png](images/img_13.png)
 
-# **Phần 4 : Build multi containe**
+# **Phần 4 : Thực hành  build multi container**
 **Sơ đồ cấu trúc :** 
 [Folder thực hành : ](./Practive_Multiple_container_laravel_php_nginx)
 ![img_14.png](images/img_14.png)
-1. Nginx Container :
+
+#### 1. Nginx Container :
     
      [Source code : laravel-01-added-nginx](./laravel-01-added-nginx)
      [Nginx config : nginx.conf](./nginx.conf)
-2. PHP Container
-3. MySQL Container
+
+#### 2. PHP Container
+
+#### 3. MySQL Container
+
  => Khai báo 3 services trong dockerfiles như sau : 
   ![img_16.png](images/img_16.png)
-4. Khởi tạo Laravel App dựa trên Composer Ultility :
+
+#### 4. Khởi tạo Laravel App dựa trên Composer Ultility :
+
   `docker-compose run --rm composer create-project --prefer-dist laravel/laravel .`
  => Source code được khởi tạo trong thư mục src:
 ![img_15.png](images/img_15.png)
-5. Sửa lại url MYSQ trong file src/.env :
+
+#### 5. Sửa lại url MYSQ trong file src/.env :
+
     ![img_17.png](images/img_17.png)
-6. Run 3 container : server, php , mysql
+
+#### 6. Run 3 container : server, php , mysql
+
    `docker-compose up -d server php mysql`
  => Kết quả : localhost:8000
     ![img_18.png](images/img_18.png)
@@ -222,18 +265,21 @@ docker-compose.yaml : (Nằm trong project : compose-01-starting-setup)
 
 # **Phần 5: Deploy container lên AWS EC2**
 
-1. Một số thông tin AWS EC2 :
+#### 1. Một số thông tin AWS EC2 :
+
    Amazon Elastic Compute Cloud (Amazon EC2) là một cơ sở hạ tầng điện toán đám mây được cung cấp bởi Amazon Web Services (AWS) giúp cung cấp tài nguyên máy tính ảo hoá theo yêu cầu.
    Amazon EC2 cung cấp các ứng dụng máy tính ảo hoá có thể mở rộng về khả năng xử lý cùng các thành phần phần cứng ảo như bộ nhớ máy tính (ram), vi xử lý, linh hoạt trong việc lựa chọn các phân vùng lưu trữ dữ liệu ở các nền tảng khác nhau và sự an toàn trong quản lý dịch vụ bởi kiến trúc ảo hoá đám mây mạnh mẽ của AWS.
    Amazon EC2 sẽ cung cấp một hoặc máy chủ ảo có thể kết hợp với nhau để dễ dàng triển khai ứng dụng nhanh nhất và đảm bảo tính sẵn sàng cao nhất. Thậm chí về mặt thanh toán bạn dễ dàng biết được các mức chi phí cần thanh toán dựa trên thông tin tài nguyên bạn sử dụng.
 
-2. Các bước Deploy : 
+#### 2. Các bước Deploy : 
+
    - Khởi tạo và chạy EC2 Instance, VPC, security group
    - Cấu hình security group để ánh xạ tất cả các port đến WWW
    - Kết nối tới instance, cài đặt docker và chạy container
 
-3. Các bước implemnt deploy lên AWS EC2 : 
-[Source code : ](/deployment-01-starting-setup)
+#### 3. Các bước implement deploy lên AWS EC2 : 
+
+[Source code :deployment-01-starting-setup ](/deployment-01-starting-setup)
 
 - B1 : Build images : 
     `docker build -t node-dep-example .`
@@ -307,16 +353,20 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
 
 
-# **Phần 6: KUBERNETES BASIC**
-1. Khái niệm :
+# **Phần 6: Kubernetes basic**
+
+#### 1. Khái niệm :
+
    - Là 1 platform deploy, scaling, quản lí các ứng dụng hoạt động dựa trên container
    - Các ứng dụng cos thể khác nhau về kích thước, lên tới hàng nghìn server
 
-2. Lợi ích chủ yếu:
+#### 2. Lợi ích chủ yếu:
+
    - Điều phối container, k8s đảm bảo tất cả các container chạy trên các server (Physical machine, Virtual Hoạt đônộng)
    - Theo dõi hoạt động của từng container, Khi container nào đó bị trục trặc, K8s tự động chạy lại container đó
    
-3. Các thành phần trong K8s cluster
+#### 3. Các thành phần trong K8s cluster
+
    - Cluster:
      + 1 tập hợp các máy nodes mà ang chạy container ( worker node) và quản lý các master node
    - Node: 
@@ -349,37 +399,43 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      
 ![img_28.png](images/img_28.png)
 
-4. Những việc mà Kubernetes làm và Dev cần làm
-    - Kubernetes làm:
+#### 4. Những việc mà Kubernetes làm và Dev cần làm
+  - Kubernetes làm:
       + Tạo ra các pods và quản lý pods
       + Giám sát pods và khởi tạo lại chúng nếu có vấn đề, scale pods
-    - Dev làm:
-      + Tạo cluster và Node instance ( worker node, master node)
-      + Cấu hình API server, kubelet và các kubernetes services khác, hoặc các phần mềm trên nodes
-      + Tạo các cloud resources cần thiết ( Load balancer, File System)
-5.  Tìm hiểu về "Services" Object
-    - Services Object Expose Pods tới cluster hoặc ra bên ngoài
-    - Bởi vì mỗi pod có một IP address riêng đặc biệt là khi scalling pod thì mỗi IP của pod sẽ thay đổi
-    - Do đó Servervices có trách nhiệm nhóm các pod cùng với 1 share IP. Thằng share IP này là của service, nó ko thay đổi
-    - Services cho phép các mạng bên ngoài truy cập tới pod
-6. Cài đặt kubernetes và minikube
-    - Active kubenetes trên docker desktop:
+  - Dev làm:
+    + Tạo cluster và Node instance ( worker node, master node)
+    + Cấu hình API server, kubelet và các kubernetes services khác, hoặc các phần mềm trên nodes
+    + Tạo các cloud resources cần thiết ( Load balancer, File System)
+
+#### 5.  Tìm hiểu về "Services" Object
+
+  - Services Object Expose Pods tới cluster hoặc ra bên ngoài
+  - Bởi vì mỗi pod có một IP address riêng đặc biệt là khi scalling pod thì mỗi IP của pod sẽ thay đổi
+  - Do đó Servervices có trách nhiệm nhóm các pod cùng với 1 share IP. Thằng share IP này là của service, nó ko thay đổi
+  - Services cho phép các mạng bên ngoài truy cập tới pod
+
+#### 6. Cài đặt kubernetes và minikube
+
+  - Active kubenetes trên docker desktop:
         ![img_29.png](images/img_29.png)
-    - Cài đặt minikube (Xem hướng dẫn trên udemy)
+  - Cài đặt minikube (Xem hướng dẫn trên udemy)
     
 
    
-7. Start minikube
-    - Mở cmd Administrator
-    - Run: `minikube start --driver=hyperv`
+#### 7. Start minikube
+
+  - Mở cmd Administrator
+  - Run: `minikube start --driver=hyperv`
        
-    - Kết quả :
-       ![img_30.png](images/img_30.png)
-    - Run `minikube dashboard`
-       => ![img_31.png](images/img_31.png)
+  - Kết quả :
+    +   ![img_30.png](images/img_30.png)
+  - Run `minikube dashboard`
+    + => ![img_31.png](images/img_31.png)
     
-8. Example Practive: 
-    - Source code : kub-action-01-starting-setup
+#### 8. Example Practive: 
+
+  - Source code : kub-action-01-starting-setup
 
     - B1: Build images dưới local:
       + cd tới thư mục "kub-action-01-starting-setup"
@@ -389,21 +445,21 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
     - B2: Tạo "Deployment Object" từ image vừa build
     
-      + ` kubectl create deployment first-app --image=kub-first-app`
-      + => Kết quả:
-      + ![img_34.png](images/img_34.png)
-      + Tuy nhiên ta có thể thấy giá trị READY 0/1, tức là ko có deployments nào ready
-      + Tiếp tục Kiểm tra Nodes bằng lệnh : `kubectl get pods` 
-      + => Kết quả:
-      + ![img_35.png](images/img_35.png)
-      + Tuy nhiên ta có thể thâ là READY 0/1, tức là ko có pods nào ready
-      => Lý do là khi run lệnh tạo deployments, thì images phải là images cluster, còn images đang truyền vào là 'kub-first-app' lại là images ở dưới local
-      => Do đó cần push images local lên docker hub
-      => Trước tiên xóa deployments first-app rồi làm lại B2
-      +  Xóa deployments bằng lệnh: `kubectl delete deployment first-app`
+        + ` kubectl create deployment first-app --image=kub-first-app`
+        + => Kết quả:
+        + ![img_34.png](images/img_34.png)
+        + Tuy nhiên ta có thể thấy giá trị READY 0/1, tức là ko có deployments nào ready
+        + Tiếp tục Kiểm tra Nodes bằng lệnh : `kubectl get pods` 
+        + => Kết quả:
+        + ![img_35.png](images/img_35.png)
+        + Tuy nhiên ta có thể thâ là READY 0/1, tức là ko có pods nào ready
+          + => Lý do là khi run lệnh tạo deployments, thì images phải là images cluster, còn images đang truyền vào là 'kub-first-app' lại là images ở dưới local
+          + => Do đó cần push images local lên docker hub
+          + => Trước tiên xóa deployments first-app rồi làm lại B2
+        +  Xóa deployments bằng lệnh: `kubectl delete deployment first-app`
 
 
-   - B2 (fix): Push images kub-first-app lên dockerhub
+  - B2 (fix): Push images kub-first-app lên dockerhub
       + Login docker hub bằng account : lephihung0997@gmail.com/Hungphile@9397
       + Tạo repository: kub-first-app
       + ==>![img_36.png](images/img_36.png)
@@ -411,36 +467,38 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + ==> ![img_37.png](images/img_37.png)
       + Push lên docker hub: `docker push 123497/kub-first-app`
 
-þ
-   - B3 : Tạo "Deployment object "
-      + Tạo deployments: `kubectl create deployment first-app --image=123497/kub-first-app`
-      + Get list deployments: `kubectl get deployments`
-      + Get Node : `kubectl get pods`
-      +  => Kết quả:
-      + ![img_39.png](images/img_39.png)
+
+  - B3 : Tạo "Deployment object "
+    + Tạo deployments: `kubectl create deployment first-app --image=123497/kub-first-app`
+    + Get list deployments: `kubectl get deployments`
+    + Get Node : `kubectl get pods`
+    +  => Kết quả:
+    + ![img_39.png](images/img_39.png)
 
 
-   - B4 : Kiểm tra  minikube dashboard:
+  - B4 : Kiểm tra  minikube dashboard:
+
+
     ![img_40.png](images/img_40.png)
      (Như hình trên là làm đúng)
-   - B5: Expose Deployment to Service
-     + Run:  `kubectl expose deployment first-app --port=8080 --type=LoadBalancer`
-       (8080 là port của app.listen(8080) đc khai báo trong  file app.js)
-     + Lưu ý:
-        + type=ClusterIP(defaultType): tức là Chỉ có thể truy cập bên trong cụm cluster, và IP address cung cấp cho services này sẽ ko thể thay đổi
-        + type=NodePort : tức là deployment vừa tạo ở trên chỉ có thể expose bằng IP của WorkerNode
-        + type=Loadbalancer : tức là sẽ gen 1 IP address 
-     + Check services : `kubectl get services`
-     + ===> Kết quả:
-     + ![img_41.png](images/img_41.png)
-   - B6 : Run app service:
-     + Run trên cmd administrator : `minikube service first-app`
-     + Kq : 
-     + ![img_42.png](images/img_42.png)
-     + ![img_43.png](images/img_43.png)
+  - B5: Expose Deployment to Service
+    + Run:  `kubectl expose deployment first-app --port=8080 --type=LoadBalancer`
+    (8080 là port của app.listen(8080) đc khai báo trong  file app.js)
+    + Lưu ý:
+      + type=ClusterIP(defaultType): tức là Chỉ có thể truy cập bên trong cụm cluster, và IP address cung cấp cho services này sẽ ko thể thay đổi
+      + type=NodePort : tức là deployment vừa tạo ở trên chỉ có thể expose bằng IP của WorkerNode
+      + type=Loadbalancer : tức là sẽ gen 1 IP address 
+    + Check services : `kubectl get services`
+    + ===> Kết quả:
+    + ![img_41.png](images/img_41.png)
+  - B6 : Run app service:
+    + Run trên cmd administrator : `minikube service first-app`
+    + Kq : 
+    + ![img_42.png](images/img_42.png)
+    + ![img_43.png](images/img_43.png)
 
 
-   - B6 : Test chức năng restart container:
+   - B7 : Test chức năng restart container:
      + Trong file app.js có đoạn code:
      + `app.get('/error', (req, res) => {
        process.exit(1);
