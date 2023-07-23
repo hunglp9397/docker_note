@@ -8,6 +8,7 @@
 * ## [Phần 5: Deploy container lên AWS EC2]()
 * ## [Phần 6: Kubernetes basic]()
 * ## [Phần 7: Quản lý data và volumes trong Kubernetes]()
+* ## [Phần 8: Kubernetes network]()
 
 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
 
@@ -102,7 +103,9 @@ Khi đó, run docker thêm lệnh : "--env-file ./.env"
 
 #### 6. Docker network :
 
-[source code : ](/networks-starting-setup)
+[source code : networks-starting-setup ](/networks-starting-setup)
+
+PostMan:  
 
 - "host.docker.interal" là host local bên trong container docker
 
@@ -568,7 +571,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
          + Apply lại file master-deployment.yaml vừa tạo bằng lệnh: `kubectl apply -f master-deployment.yaml`
 
 
-# **Phần 7: QUẢN LÝ DATA VÀ VOLUME TRONG KUBERNETES**
+# **Phần 7: Quản lý data và volumes trong Kubernetes**
 
 [Source Code : ](/kub-data-01-starting-setup) _kub-data-01-starting-setup_
 
@@ -717,6 +720,30 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
         + `kubectl apply -f=deployment.yaml`
 
     - ===> Call API vẫn bình thường là đúng
-        
+
+-------------------------------------------------------------------------
     
-    
+# **Phần 7:  Kubernetes network**
+
+#### 1. Resources: 
+
+- [Source code : kub-network-01-starting-setup ](/kub-network-01-starting-setup)
+- PostMan folder : _API Test K8s Network_
+
+#### 2. Kiến trúc project:
+
+  - ![img.png](images/1.jpg)
+
+
+#### 3. Build images và run container dưới local:
+   - `docker-compose up -d --build`
+   - Kết quả:
+     + ![2.jpg](images/2.jpg)
+   - User API, Login : 
+      + ![3.jpg](images/3.jpg) 
+   - Task API, Add Task
+      + ![4.jpg](images/4.jpg)
+   - Task API, Get Task
+     + ![5.jpg](images/5.jpg) 
+
+
