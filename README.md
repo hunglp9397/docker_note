@@ -622,9 +622,31 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
       + kubectl apply -f=host-pvc.yaml
       + kubectl apply -f=deployment.yaml
     ==== Xong
-      
+     
+   -  Tổng kết:
+    + So sánh "Volume thường" và "Persistent Volume
+        + Volume thường:
+          + Được đính kèm vào pod và vòng đời của Pod, Khi Pod bị xóa thì data trong volume cũng sẽ bị xóa
+          + Được định nghĩa và khởi tạo cùng với Pod
+          + Nếu có nhiều Pods, nhiều deployments thì sẽ cần khai báo nhiều lần volume
+        
+        + PersistentVolumes:
+          + Là cụm tài nguyên độc lập, không ảnh hưởng gì tới pods hoặc node
+          + Được định nghiax và khởi tạo độc lập (cùng với PersistentVolumeClaim)
+          + Chỉ cần khai báo 1 lần và sử dụng được nhiều lần
 
+8. **Sử dụng Environment Var và ConfigMaps**
+    - Environment Variables
+        + Ta có thể khai báo các biến môi trường trong phần configs containers của file deployment.yaml
+            + ![img_85.png](img_85.png)
+            + Sử dụng biến môi trường trong file app.js (folder kub-data-01-starting-setup) : `const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');', 'text.txt');`
+        + Sau đó sửa lại tag của images thành tag2 : ![img_87.png](img_87.png)
+        + Build lại images bằng lệnh : `docker build -t 123497/kub-data-demo:3 .`
+        + Push tag2 này lên docker hub : `docker push 123497/kub-data-demo:3`
+        + Apply lại file deployment.yaml : `kubectl apply -f=deployment.yaml`
+    
+        + Kết quả: Pods cũ sẽ bị xóa, và thay thế bằng 2 pods mới:
+          + ![img_88.png](img_88.png)
+          + ![img_89.png](img_89.png)
 
-
-
-
+    

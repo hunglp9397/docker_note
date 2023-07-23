@@ -14,7 +14,10 @@ spec:
     spec:
       containers: #Khai báo container trong pod
         - name: story
-          image: 123497/kub-data-demo:1
+          image: 123497/kub-data-demo:3
+          env: # Khai báo biến môi trường
+            - name: STORY_FOLDER
+              value: 'story'
           # Xác định volume nào sẽ được mount vào container(Vì ở bên dưới có tể khai báo nhiều volume).
           # Ở đây /app là khai báo WORKDIR trong file Dockerfile
           # Ở đây /story là folder lưu data, được khai báo trong file app.js. Đây : const filePath = path.join(__dirname, 'story', 'text.txt');
