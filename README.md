@@ -515,7 +515,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
 # **Phần 7: QUẢN LÝ DATA VÀ VOLUME TRONG KUBERNETES**
 
-[Source Code : ](kub-action-01-starting-setup) _kub-action-01-starting-setup_
+[Source Code : ](/kub-data-01-starting-setup) _kub-data-01-starting-setup_
 
 
 1. **Kiến thức cơ bản về Volumes trong kubernetes**
@@ -530,7 +530,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
             + Không hỗ trợ nhiều môi trường( chỉ có local hoặc dev)
             + Volumes sẽ tồn tại mãi mãi trên machine nào đó ( Trừ khi cài lại os, reset máy)
 2. **Build Images và run app:**
-    - cd tới thư mục kub-action-01-starting-setup (Quyền administrator)
+    - cd tới thư mục kub-data-01-starting-setup (Quyền administrator)
     - Run lệnh : `docker-compose up -d --build`
     - Kết quả: ![img_58.png](img_58.png)
     - ![img_59.png](img_59.png)
@@ -598,15 +598,17 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
    - (Trong hình trên ta khai báo 2 pods replica và Thay đổi volume type là hostPath)
 
 
-6. **Tìm hiểu persistent volumes**
-    - Đặt vấn đề: volumes sẽ bị xóa khi mà Pods bị xóa
-      - Và Dùng hostPath volumes chỉ hoạt động treen env mà có 1 node
-      - Pod và Node độc lập với Volume
-      - Persistent Volumes giải quyết được vấn đề này:
-        + ![img_81.png](img_81.png)
-        + Ta ko lưu data trong Node, Mà lưu data trong Cluster
-        + Có một persistent Volume Claim trỏ tới volume trong cụm Cluster đó ( như hình)
-7.  **VÍ dụ sử dụng Persistent Volumes**
+6. **Tìm hiểu persistent volumes (Hay sử dụng cách này nhất)**
+    - Đặt vấn đề: 
+      + Với emptyDir,  volumes sẽ bị xóa khi mà Pods bị xóa hoặc Khi scale pods từ 1 pods thành nhiều pods, thì pods mới tạo sẽ không có data
+      + Với hostPath, thì minikube chỉ hoạt động với 1 worker Node, Do đó khi chạy trên môi trường thật như AWS thì Node mới sẽ ko có data
+    - Pod và Node độc lập với Volume
+   - Persistent Volumes giải quyết được vấn đề này:
+         + ![img_81.png](img_81.png)
+         + Ta ko lưu data trong Node, Mà lưu data trong Cluster
+         + Có một persistent Volume Claim trỏ tới volume trong cụm Cluster đó ( như hình)
+         + Cách này làm cho Volumes độc lập và không phụ thuộc vào Node hoặc pods
+7.  **Sử dụng Persistent Volumes**
     -  [Source: kub-data-01-starting-setup](kub-data-01-starting-setup)
     - cd tới thư mục project : kub-data-01-starting-setup
     - Tạo Persistent Volume: Tạo file host-pv.yaml
@@ -615,3 +617,14 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     - ![img_83.png](img_83.png)
     - Sửa lại file deployment.yaml như sau:
     - ![img_84.png](img_84.png)
+    - Apply host-pv.yaml, host-pvc.yaml, deployment.yaml:
+      + kubectl apply -f=host-pv.yaml
+      + kubectl apply -f=host-pvc.yaml
+      + kubectl apply -f=deployment.yaml
+    ==== Xong
+      
+
+
+
+
+

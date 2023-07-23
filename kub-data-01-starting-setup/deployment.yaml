@@ -23,12 +23,12 @@ spec:
               name: story-volume
       volumes:
         - name: story-volume
-#          emptyDir: {}  # Cách 1. Sử dụng empty Volumes
-#                        # nghĩa là bất kì khi nào pods được start, hoặc restart thì sẽ tạo ra một thư mục trống mới, container có thể ghi data vào thư mục này
-#                        # Do đó, bất cứ khi nào container bị restart -> data sẽ được bảo đảm
-#                        # tuy nhiên nếu pods bị remove , thì emptyDir này cũng sẽ bị xóa -> Do đó data trong volumes cũng sẽ mất
-#          hostPath:                   #Cách 2. Sử dụng hostPath Volumes
-#            path: /data
-#            type: DirectoryOrCreate
-          persistentVolumeClaim:      # Cách 3. Sử dụng persistentVolumes
+##          emptyDir: {}  # Cách 1. Sử dụng empty Volumes
+##                        # nghĩa là bất kì khi nào pods được start, hoặc restart thì sẽ tạo ra một thư mục trống mới, container có thể ghi data vào thư mục này
+##                        # Do đó, bất cứ khi nào container bị restart -> data sẽ được bảo đảm
+##                        # tuy nhiên nếu pods bị remove , thì emptyDir này cũng sẽ bị xóa -> Do đó data trong volumes cũng sẽ mất
+##          hostPath:                   #Cách 2. Sử dụng hostPath Volumes
+##            path: /data
+##            type: DirectoryOrCreate
+          persistentVolumeClaim:      # Cách 3. Sử dụng PersistentVolumeCLaim
             claimName: host-pvc
