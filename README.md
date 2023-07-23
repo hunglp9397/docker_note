@@ -193,13 +193,12 @@ Nhưng không ai dùng cách này cả. Best practive là tạo một network ch
     
 ####   -B4 : Run frontend trong network vừa tạo :
 
-   Tuy nhiên cần sửa lại file App.js , sửa lại url tới api mà FE gọi tới BE là localhost. Sau đó vẫn cần phải export cổng 3000
-    ![img_9.png](images/img_9.png)
-    Build lại images rồi run frontend container `docker run --name goals-frontend --rm -d --network goals-net -p 3000:3000 goals-react`
-  =============
-   Giải thích lý do vì sao vẫn cần phải export port : Vì tại file app.js trong backend. Code ko chạy trong container, mà nó chạy trên web browser, docker ko giúp run code trên web browser 
-   => Kết quả : 
-   ![img_10.png](images/img_10.png)
+  - Tuy nhiên cần sửa lại file App.js , sửa lại url tới api mà FE gọi tới BE là localhost. Sau đó vẫn cần phải export cổng 3000
+    + ![img_9.png](images/img_9.png)
+    + Build lại images rồi run frontend container `docker run --name goals-frontend --rm -d --network goals-net -p 3000:3000 goals-react`
+  - Giải thích lý do vì sao vẫn cần phải export port : Vì tại file app.js trong backend. Code ko chạy trong container, mà nó chạy trên web browser, docker ko giúp run code trên web browser 
+    +=> Kết quả : 
+    + ![img_10.png](images/img_10.png)
 
 # **Phần 3 : Build multi container bằng DockerCompose**
 [Source code:compose-01-starting-setup](/compose-01-starting-setup) 
