@@ -766,3 +766,33 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 - Expose services (cmd line administrator) : `minikube service users-service`
     + ![img_9.jpg](images/9.jpg)
     + ![img_10.jpg](images/10.jpg)
+    + ![img_11.jpg](images/11.jpg)
+
+
+
+##### 4.3: Apply services cho auth-api
+- Tao repository trên dockerhub với tên: _kub-demo-auth_
+- cd tới folder auth-api, Build images bằng lệnh : `docker build -t 123497/kub-demo-auth .`
+- Push lên hub: `docker push 123497/kub-demo-auth`
+
+
+##### 4.4 Nhiều containers trong 1 pods
+- Đặt vấn đề:
+    + ![img_12.jpg](images/12.jpg)
+    + Nếu như deploy dưới local( mục 3) thì users-api gọi thông qua được auth-api thoogn qua network
+    + Còn khi Build k8s thì ta cần setting network cho các services
+    + Tuy nhiên ko khai báo thêm Deployment và Services cho Auth-api
+    + Mà trong user-deployment, ta khai báo nhiều container 
+        + ![img_14.jpg](images/14.jpg)
+        + ![img_13.jpg](images/13.jpg)
+- Ngoài ra, Ta cũng call internal Auth API (Ko muốn expose Auth-API), Do đó cần sửa lại environment như sau: 
+    + ![img_15.jpg](images/15.jpg)
+    + ![img_16.jpg](images/16.jpg)
+    + ![img_17.jpg](images/17.jpg)
+    
+- Build lại images (Do update docker-compose)
+  +  ` docker build -t 123497/kub-demo-users .`
+- Push lại images lên docekr hub : 
+  +  `docker push 123497/kub-demo-users`
+- APply lại file user-deployment
+  + `minikube apply -f=kubernetes/users-deployment.yaml`
