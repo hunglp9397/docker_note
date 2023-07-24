@@ -747,3 +747,22 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
      + ![5.jpg](images/5.jpg) 
 
 
+#### 4. Build deployments và services:
+- Trên docker hub, Tạo repository : _kub-demo-users_
+- Sửa lại code, Build lại images users-api : `docker build -t 123497/kub-demo-users .`
+- Push lên docker hub : `docker push 123497/kub-demo-users`
+    + ![6.jpg](images/6.jpg)
+ 
+##### 4.1: Apply Deployments cho users-api
+- Tạo file users-deployment.yaml trong folder kubernetes
+- Trong folder kub-network-01-starting-setup, Apply deployment :  `kubectl apply -f=kubernetes/users-deployment.yaml`
+    + ![img_7.jpg](images/7.jpg)
+
+
+##### 4.2: Apply Services cho users-api
+- Tạo file users-services.yaml trong folder kuberntes
+- Trong folder kub-network-01-starting-setup, APPly services : `kubectl apply -f=kubernetes/users-service.yaml`
+    + ![img_8.jpg](images/8.jpg)
+- Expose services (cmd line administrator) : `minikube service users-service`
+    + ![img_9.jpg](images/9.jpg)
+    + ![img_10.jpg](images/10.jpg)
