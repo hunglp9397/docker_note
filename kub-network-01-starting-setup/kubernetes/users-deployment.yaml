@@ -15,5 +15,9 @@ spec:
       containers:
         - name: users
           image: 123497/kub-demo-users:latest
+          env:
+            - name: AUTH_ADDRESS
+              value: localhost  # Ở đây khai báo là local host
+
         - name: auth
           image: 123497/kub-demo-auth:latest

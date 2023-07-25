@@ -796,3 +796,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
   +  `docker push 123497/kub-demo-users`
 - APply lại file user-deployment
   + `minikube apply -f=kubernetes/users-deployment.yaml`
+  + Kiểm tra: `kubectl get pods`(2 containers trong 1 pods)
+    + ![img_18.jpg](images/18.jpg)
+    + ![img_19.jpg](images/19.jpg)
+    + ![img_20.jpg](images/20.jpg)
