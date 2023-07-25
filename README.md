@@ -845,3 +845,21 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
 - ===> Tổng kết cho cách 2 (phần 4.6 này):
   + gọi được API signup được là đúng
+
+
+##### 4.7 Deploy tasks-api
+- Config cách để call đển authAPi trong file tasks-app.js như sau:
+    + ![33.jpg](images/33.jpg)
+    + ![34.jpg](images/34.jpg)
+
+
+- Tạo repository trên docker hub
+- Build images task : `docker build -t 123497/kub-demo-tasks .`
+- Push lên docker hub: `docker push 123497/kub-demo-taks .`
+- Tạo file task-deployment.yaml
+- Tạo file task-service.yaml
+- Apply task-deployment.yaml, task-service.yaml : `kubectl apply -f=kubernetes/tasks-deployment.yaml -f=kubernetes/tasks-service.yaml`
+- Expose task service(cmd Adminitrator) :`minikube service tasks-service`
+  + ![35.jpg](images/35.jpg)
+  + ![36.jpg](images/36.jpg)
+  + ![37.jpg](images/37.jpg)

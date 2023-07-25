@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind : Deployment
+metadata:
+  name: tasks-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app : tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+        - name: users
+          image: 123497/kub-demo-tasks:latest
+          env:
+            - name: AUTH_ADDRESS          # env variable cho việc call auth-service-api
+              value: "auth-service.default"
+            - name: TASKS_FOLDER        #env variable cho việc lưu tasks
+              value: "tasks"
