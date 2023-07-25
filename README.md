@@ -813,6 +813,9 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     + ![img_24.png](images/24.jpg)
 - Apply auth-deployment và auth-services:
     + `kubectl apply -f=kubernetes/auth-service.yaml -f=kubernetes-auth-deployment.yaml`
+
+##### 4.6 Giao tiếp Giữa Pod vs Pod
+###### Cách 1: Sử dụng IP Address tự gen bởi K8S
 - Sửa đường dẫn đến authAPI trong file users-app.js như sau:
     + ![img_25.jpg](images/25.jpg)
     + ![img_26.jpg](images/26.jpg)
@@ -825,6 +828,20 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 - Xóa users-deployment rồi apply lại : 
     + `kubectl delete -f=kubernetes/users-deployment.yaml`
     + `kubectl apply -f=kubernets/users-deployment.yaml`
-- =>> Tổng kết cho phần 4.5 này: 
-    + Call api signup và login được là đúng
+- =>> Tổng kết cho Cách 1 (phần 4.6) này: 
+    + Call api login được là đúng (Vì ở ví dụ cách1 : _dùng  IP address tự gen_ này cho api login)
+        + ![32.jpg](images/32.jpg)
     + Giá trị "AUTH_SERVICE_SERVICE_HOST" sẽ tự động gen IP address của auth_service (k8s gen)
+
+
+###### Cách 2: Sử dụng DNS namespace
+- Kiểm tra namespace của K8s : `kubectl get namespace`
+  + ![29.jpg](images/29.jpg)
+- Config lại file user-deployment.yaml để gọi internal sang auth-service như sau: 
+  + ![30.jpg](images/30.jpg)
+- Apply lại file users-deployment.yaml
+- Note : Ở ví dụ này, apply cách sử dụng DN namespace cho api signup
+  + ![31.jpg](images/31.jpg)
+
+- ===> Tổng kết cho cách 2 (phần 4.6 này):
+  + gọi được API signup được là đúng
