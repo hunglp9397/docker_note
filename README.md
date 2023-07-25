@@ -731,7 +731,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 - PostMan folder : _API Test K8s Network_
 
 #### 2. Kiến trúc project:
-
+  - Ý tưởng ban đầu :  Cụm cluster chỉ gồm 2 pod, 
   - ![img.png](images/1.jpg)
 
 
@@ -784,7 +784,7 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     + Tuy nhiên ko khai báo thêm Deployment và Services cho Auth-api
     + Mà trong user-deployment, ta khai báo nhiều container 
         + ![img_14.jpg](images/14.jpg)
-        + ![img_13.jpg](images/13.jpg)
+        + ![img_21.jpg](images/21.jpg)
 - Ngoài ra, Ta cũng call internal Auth API (Ko muốn expose Auth-API), Do đó cần sửa lại environment như sau: 
     + ![img_15.jpg](images/15.jpg)
     + ![img_16.jpg](images/16.jpg)
@@ -800,3 +800,31 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     + ![img_18.jpg](images/18.jpg)
     + ![img_19.jpg](images/19.jpg)
     + ![img_20.jpg](images/20.jpg)
+
+
+##### 4.5 Deploy TaskAPI trong Một Pods mới
+- Đặt vấn đề : 
+  + Thay đổi ý tưởng kiến trúc project thành 3 pods, 3 deployment, 3 services
+  + ![img_22.jpg](images/22.jpg)
+  + Bây giờ giao tiếp giữa pod với pod trong 1 cụm cluster
+- Tạo file auth-deployment
+    + ![img_23.jpg](images/23.jpg)
+- tạo file auth-service.yaml*(chú ý chỗ config type là ClusterIP trong file COnfig này )*
+    + ![img_24.png](images/24.jpg)
+- Apply auth-deployment và auth-services:
+    + `kubectl apply -f=kubernetes/auth-service.yaml -f=kubernetes-auth-deployment.yaml`
+- Sửa đường dẫn đến authAPI trong file users-app.js như sau:
+    + ![img_25.jpg](images/25.jpg)
+    + ![img_26.jpg](images/26.jpg)
+    + Giải thích dùng giá trị _AUTH_SERVICE_SERVICE_HOST_ : Giá trị này là "tên của authserrivce" + "SERVICE_HOST"
+    + GIá trị trên sẽ tự động gen IP address bởi K8S
+- Build lại images user-apis:
+    + cd tới folder users-api
+    + Build lại image : `docker build -t 123497/kub-demo-users .`
+    + Pussh leen docker hub : `docker push 123497/kub-demo-users`
+- Xóa users-deployment rồi apply lại : 
+    + `kubectl delete -f=kubernetes/users-deployment.yaml`
+    + `kubectl apply -f=kubernets/users-deployment.yaml`
+- =>> Tổng kết cho phần 4.5 này: 
+    + Call api signup và login được là đúng
+    + Giá trị "AUTH_SERVICE_SERVICE_HOST" sẽ tự động gen IP address của auth_service (k8s gen)

@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  type: ClusterIP # Ở đây dùng type là ClusterIP vì chỉ muốn authAPI chỉ cho phép các pods trong nội bộ cluster truy cập
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
