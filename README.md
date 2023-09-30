@@ -17,9 +17,11 @@
 
 ## [PHẦN 1 : Docker cơ bản]()
 
-Có 2 cách lưu trữ dữ liệu từ container ra ngoài máy host:
+Có 2 cách lưu trữ dữ liệu từ container ra ngoài máy host: Docker volumes vaf Bind Mounds
 
 #### 1.Docker volumns : 
+
+Volume khi tạo ra sẽ nằm ở thư mục /var/lib/docker/volumes/
 
 Là folder ở máy host mà được mounted và mapped vào trong container
 
