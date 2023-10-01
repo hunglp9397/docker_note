@@ -365,8 +365,8 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
 
 #### 2. Lợi ích chủ yếu:
 
-   - Điều phối container, k8s đảm bảo tất cả các container chạy trên các server (Physical machine, Virtual Hoạt đônộng)
-   - Theo dõi hoạt động của từng container, Khi container nào đó bị trục trặc, K8s tự động chạy lại container đó
+   - Điều phối container, theo dõi hoạt động của từng container (Trên Physical machine, hoặc Virtual Machine)
+   - Khi container nào đó bị trục trặc, K8s tự động chạy lại container đó
    
 #### 3. Các thành phần trong K8s cluster
 
