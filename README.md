@@ -377,7 +377,9 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
    - Pod: 
      + Pod là đơn vị nhỏ nhất trong kubernets
      + Pod chứa một hoặc nhiều container
+     + Mỗi Pod có một IP address, Khi một 
      + Pod có thể kết nối với các pod khác thông qua IP
+     + Nếu một Pod die vì một lý do nào đó, Thì khi K8S Run lại, pod sẽ mang một IP mới (Điều này dẫn tới cần có service mục 5)
      + Chứa volumes
      + Các container bên trong host có thể giao tiếp thông qua localhost
    - Worker Nodes:
@@ -412,10 +414,9 @@ sudo docker run  -d --rm -p 80:80 123497/node-example-1
     + Tạo các cloud resources cần thiết ( Load balancer, File System)
 
 #### 5.  Tìm hiểu về "Services" Object
-
   - Services Object Expose Pods tới cluster hoặc ra bên ngoài
   - Bởi vì mỗi pod có một IP address riêng đặc biệt là khi scalling pod thì mỗi IP của pod sẽ thay đổi
-  - Do đó Servervices có trách nhiệm nhóm các pod cùng với 1 share IP. Thằng share IP này là của service, nó ko thay đổi
+  - Do đó Servervices có trách nhiệm nhóm các pod với nhau. Thằng share IP này là của service, nó ko thay đổi
   - Services cho phép các mạng bên ngoài truy cập tới pod
 
 #### 6. Cài đặt kubernetes và minikube
